@@ -1,0 +1,30 @@
+{
+  "name": "koa-cash",
+  "description": "HTTP response caching for Koa",
+  "version": "1.0.0",
+  "dependencies": {
+    "mz": "*",
+    "bytes": "*",
+    "compressible": "*",
+    "stream-to-array": "*",
+    "koa-is-json": "*"
+  },
+  "devDependencies": {
+    "koa": "*",
+    "mocha": "*",
+    "should": "*",
+    "supertest": "*",
+    "lru-cache": "*"
+  },
+  "scripts": {
+    "test": "mocha --harmony-generators --require should --reporter spec --bail"
+  },
+  "author": {
+    "name": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "twitter": "https://twitter.com/jongleberry"
+  },
+  "repository": "koajs/cash",
+  "license": "MIT"
+}
