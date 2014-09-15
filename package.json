@@ -1,7 +1,7 @@
 {
   "name": "koa-cash",
   "description": "HTTP response caching for Koa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "mz": "1",
     "bytes": "1",
@@ -30,5 +30,7 @@
   },
   "repository": "koajs/cash",
   "license": "MIT",
-  "files": ["index.js"]
+  "files": [
+    "index.js"
+  ]
 }
