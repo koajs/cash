@@ -1,5 +1,13 @@
 # Koa Cash
 
+[![NPM version][npm-image]][npm-url]
+[![Build status][travis-image]][travis-url]
+[![Test coverage][coveralls-image]][coveralls-url]
+[![Dependency Status][david-image]][david-url]
+[![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
+[![Gittip][gittip-image]][gittip-url]
+
 HTTP response caching for Koa.
 Caches the response based on any arbitrary store you'd like.
 
@@ -112,3 +120,20 @@ Otherwise, continue setting `this.response.body=` and this will cache the respon
   Don't set `304` status codes on these routes - this middleware will handle it for you
 - The underlying store should be able to handle `Date` objects as well as `Buffer` objects.
   Otherwise, you may have to serialize/deserialize yourself.
+
+[npm-image]: https://img.shields.io/npm/v/koa-cash.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/koa-cash
+[github-tag]: http://img.shields.io/github/tag/koajs/cash.svg?style=flat-square
+[github-url]: https://github.com/koajs/cash/tags
+[travis-image]: https://img.shields.io/travis/koajs/cash.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koajs/cash
+[coveralls-image]: https://img.shields.io/coveralls/koajs/cash.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/koajs/cash?branch=master
+[david-image]: http://img.shields.io/david/koajs/cash.svg?style=flat-square
+[david-url]: https://david-dm.org/koajs/cash
+[license-image]: http://img.shields.io/npm/l/koa-cash.svg?style=flat-square
+[license-url]: LICENSE
+[downloads-image]: http://img.shields.io/npm/dm/koa-cash.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/koa-cash
+[gittip-image]: https://img.shields.io/gittip/jonathanong.svg?style=flat-square
+[gittip-url]: https://www.gittip.com/jonathanong/

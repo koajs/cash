@@ -5,7 +5,7 @@ var cache = require('lru-cache')
 var request = require('supertest')
 var PassThrough = require('stream').PassThrough
 
-var cash = require('./')
+var cash = require('..')
 
 describe('when not cached', function () {
   describe('when the body is a string', function () {

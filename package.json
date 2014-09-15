@@ -3,21 +3,24 @@
   "description": "HTTP response caching for Koa",
   "version": "1.0.0",
   "dependencies": {
-    "mz": "*",
-    "bytes": "*",
-    "compressible": "*",
-    "stream-to-array": "*",
-    "koa-is-json": "*"
+    "mz": "1",
+    "bytes": "1",
+    "compressible": "2",
+    "stream-to-array": "2",
+    "koa-is-json": "1"
   },
   "devDependencies": {
-    "koa": "*",
-    "mocha": "*",
-    "should": "*",
-    "supertest": "*",
-    "lru-cache": "*"
+    "koa": "0",
+    "mocha": "1",
+    "should": "4",
+    "supertest": "0",
+    "lru-cache": "2",
+    "istanbul-harmony": "0"
   },
   "scripts": {
-    "test": "mocha --harmony-generators --require should --reporter spec --bail"
+    "test": "NODE_ENV=test mocha --harmony-generators --require should --reporter spec",
+    "test-cov": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require should",
+    "test-travis": "NODE_ENV=test node --harmony-generators ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly -- --require should"
   },
   "author": {
     "name": "Jonathan Ong",
@@ -26,5 +29,6 @@
     "twitter": "https://twitter.com/jongleberry"
   },
   "repository": "koajs/cash",
-  "license": "MIT"
+  "license": "MIT",
+  "files": ["index.js"]
 }
