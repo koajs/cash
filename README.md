@@ -6,7 +6,6 @@
 [![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
 [![Downloads][downloads-image]][downloads-url]
-[![Gittip][gittip-image]][gittip-url]
 
 HTTP response caching for Koa.
 Caches the response based on any arbitrary store you'd like.
@@ -135,5 +134,3 @@ Otherwise, continue setting `this.response.body=` and this will cache the respon
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/koa-cash.svg?style=flat-square
 [downloads-url]: https://npmjs.org/package/koa-cash
-[gittip-image]: https://img.shields.io/gittip/jonathanong.svg?style=flat-square
-[gittip-url]: https://www.gittip.com/jonathanong/
