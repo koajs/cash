@@ -3,14 +3,14 @@
   "description": "HTTP response caching for Koa",
   "version": "1.0.1",
   "dependencies": {
-    "mz": "1",
-    "bytes": "1",
+    "bytes": "^2.1.0",
     "compressible": "2",
-    "stream-to-array": "2",
-    "koa-is-json": "1"
+    "koa-is-json": "1",
+    "mz": "^2.0.0",
+    "stream-to-array": "2"
   },
   "devDependencies": {
-    "koa": "0",
+    "koa": "1",
     "mocha": "1",
     "should": "4",
     "supertest": "0",
