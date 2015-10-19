@@ -76,7 +76,7 @@ module.exports = function (options) {
 
     if (!this.response.get('Content-Encoding')) this.response.set('Content-Encoding', 'identity')
 
-    yield set(this.cashKey, obj)
+    yield set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0)
   }
 
   function* cashed(maxAge) {
@@ -88,7 +88,7 @@ module.exports = function (options) {
     var body = obj && obj.body
     if (!body) {
       // tell the upstream middleware to cache this response
-      this.cash = true
+      this.cash = { maxAge: maxAge }
       return false
     }
 
