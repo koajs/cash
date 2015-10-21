@@ -1,7 +1,7 @@
 {
   "name": "koa-cash",
   "description": "HTTP response caching for Koa",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "dependencies": {
     "bytes": "^2.1.0",
     "compressible": "2",
