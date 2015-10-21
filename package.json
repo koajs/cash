@@ -15,7 +15,7 @@
     "should": "4",
     "supertest": "0",
     "lru-cache": "2",
-    "istanbul-harmony": "0"
+    "istanbul": "0"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --require should --reporter spec",
