@@ -75,10 +75,13 @@ This module makes no opinion about it.
 Set a value to a store. Must return a "yieldable".
 
 ```js
-function set(key, value) {
+function set(key, value, maxAge) {
   return <yieldable>
 }
 ```
+
+Note: `maxAge` is set by `.cash={ maxAge }`.
+If it's not set, then `maxAge` will be `0`, which you should then ignore.
 
 #### Example
 

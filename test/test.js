@@ -8,6 +8,41 @@ var PassThrough = require('stream').PassThrough
 var cash = require('..')
 
 describe('when not cached', function () {
+  it('should pass the maxAge through this.cash=', function (done) {
+    var app = koa()
+    var c = cache()
+    var set = false
+
+    app.use(cash({
+      get: function* (key) {
+        return c.get(key)
+      },
+      set: function* (key, value, maxAge) {
+        set = true
+        assert.equal(maxAge, 300)
+        return c.set(key, value)
+      }
+    }))
+    app.use(function* (next) {
+      if (yield* this.cashed()) return
+      this.cash = {
+        maxAge: 300
+      }
+      this.body = 'lol'
+    })
+
+    request(app.listen())
+    .get('/')
+    .expect(200)
+    .expect('lol', function (err, res) {
+      if (err) return done(err)
+
+      assert(set)
+      c.get('/').body.should.equal('lol')
+      done()
+    })
+  })
+
   describe('when the body is a string', function () {
     it('should cache the response', function (done) {
       var app = koa()
