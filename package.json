@@ -12,10 +12,10 @@
   "devDependencies": {
     "istanbul": "0",
     "koa": "1",
-    "lru-cache": "2",
+    "lru-cache": "4.0.0",
     "mocha": "^2.3.3",
-    "should": "4",
-    "supertest": "0"
+    "should": "8.0.2",
+    "supertest": "1.1.0"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --require should --reporter spec",
