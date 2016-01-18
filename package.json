@@ -3,6 +3,7 @@
   "description": "HTTP response caching for Koa",
   "version": "1.1.0",
   "dependencies": {
+    "bluebird": "^3.1.1",
     "bytes": "^2.1.0",
     "compressible": "2",
     "koa-is-json": "1",

@@ -4,6 +4,7 @@ const compressible = require('compressible')
 const toArray = require('stream-to-array')
 const compress = require('mz/zlib').gzip
 const isJSON = require('koa-is-json')
+const Bluebird = require('bluebird')
 const bytes = require('bytes')
 
 // methods we cache
@@ -23,11 +24,48 @@ module.exports = function (options) {
   if (!get) throw new Error('.get not defined')
   if (!set) throw new Error('.set not defined')
 
+  // this.cashed(maxAge) => boolean
+  const cashed = Bluebird.coroutine(function * cashed (maxAge) {
+    // uncacheable request method
+    if (!methods[this.request.method]) return false
+
+    const key = this.cashKey = hash.call(this, this)
+    const obj = yield Promise.resolve(get(key, maxAge || options.maxAge || 0))
+    const body = obj && obj.body
+    if (!body) {
+      // tell the upstream middleware to cache this response
+      this.cash = { maxAge }
+      return false
+    }
+
+    // serve from cache
+    this.response.type = obj.type
+    if (obj.lastModified) this.response.lastModified = obj.lastModified
+    if (obj.etag) this.response.etag = obj.etag
+    if (this.request.fresh) {
+      this.response.status = 304
+      return true
+    }
+
+    if (obj.gzip
+      && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
+      this.response.body = obj.gzip
+      this.response.set('Content-Encoding', 'gzip')
+    } else {
+      this.response.body = obj.body
+      // tell any compress middleware to not bother compressing this
+      this.response.set('Content-Encoding', 'identity')
+    }
+
+    return true
+  })
+
+  // the actual middleware
   return function * cash (next) {
     this.vary('Accept-Encoding')
     this.cashed = cashed
 
-    yield* next
+    yield next
 
     // check for HTTP caching just in case
     if (!this.cash) {
@@ -77,41 +115,6 @@ module.exports = function (options) {
 
     if (!this.response.get('Content-Encoding')) this.response.set('Content-Encoding', 'identity')
 
-    yield set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0)
-  }
-
-  function * cashed (maxAge) {
-    // uncacheable request method
-    if (!methods[this.request.method]) return false
-
-    const key = this.cashKey = hash.call(this, this)
-    const obj = yield get(key, maxAge || options.maxAge || 0)
-    const body = obj && obj.body
-    if (!body) {
-      // tell the upstream middleware to cache this response
-      this.cash = { maxAge }
-      return false
-    }
-
-    // serve from cache
-    this.response.type = obj.type
-    if (obj.lastModified) this.response.lastModified = obj.lastModified
-    if (obj.etag) this.response.etag = obj.etag
-    if (this.request.fresh) {
-      this.response.status = 304
-      return true
-    }
-
-    if (obj.gzip
-      && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-      this.response.body = obj.gzip
-      this.response.set('Content-Encoding', 'gzip')
-    } else {
-      this.response.body = obj.body
-      // tell any compress middleware to not bother compressing this
-      this.response.set('Content-Encoding', 'identity')
-    }
-
-    return true
+    yield Promise.resolve(set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0))
   }
 }

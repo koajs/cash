@@ -15,17 +15,17 @@ describe('when not cached', () => {
     let set = false
 
     app.use(cash({
-      * get (key) {
+      get (key) {
         return c.get(key)
       },
-      * set (key, value, maxAge) {
+      set (key, value, maxAge) {
         set = true
         assert.equal(maxAge, 300)
         return c.set(key, value)
       }
     }))
     app.use(function * (next) {
-      if (yield* this.cashed()) return
+      if (yield this.cashed()) return
       this.cash = {
         maxAge: 300
       }
@@ -49,15 +49,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
       })
 
@@ -78,15 +78,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = new Buffer('lol')
       })
 
@@ -107,15 +107,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = {
           message: 'hi'
         }
@@ -138,15 +138,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = new PassThrough()
         this.body.end('lol')
       })
@@ -168,15 +168,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.response.type = 'text/plain'
         this.body = new Buffer(2048)
       })
@@ -200,15 +200,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.response.type = 'image/png'
         this.body = new Buffer(2048)
       })
@@ -232,15 +232,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
       })
 
@@ -264,15 +264,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
       })
 
@@ -294,15 +294,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
       })
 
@@ -323,15 +323,15 @@ describe('when not cached', () => {
       const app = koa()
       const c = cache()
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
         this.status = 201
       })
@@ -354,15 +354,15 @@ describe('when not cached', () => {
       const c = cache()
       const date = Math.round(Date.now() / 1000)
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
         this.etag = 'lol'
         this.lastModified = new Date(date * 1000)
@@ -390,15 +390,15 @@ describe('when not cached', () => {
       const c = cache()
       const date = Math.round(Date.now() / 1000)
       app.use(cash({
-        * get (key) {
+        get (key) {
           return c.get(key)
         },
-        * set (key, value) {
+        set (key, value) {
           return c.set(key, value)
         }
       }))
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         this.body = 'lol'
         this.etag = 'lol'
         this.lastModified = new Date(date * 1000)
@@ -417,10 +417,10 @@ describe('when cached', () => {
   const c = cache()
   const date = Math.round(Date.now() / 1000)
   const _cash = cash({
-    * get (key) {
+    get (key) {
       return c.get(key)
     },
-    * set (key, value) {
+    set (key, value) {
       return c.set(key, value)
     }
   })
@@ -429,7 +429,7 @@ describe('when cached', () => {
     const app = koa()
     app.use(_cash)
     app.use(function * (next) {
-      if (yield* this.cashed()) return
+      if (yield this.cashed()) return
       this.body = 'lol'
       this.etag = 'lol'
       this.lastModified = new Date(date * 1000)
@@ -445,7 +445,7 @@ describe('when cached', () => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         throw new Error('wtf')
       })
 
@@ -463,7 +463,7 @@ describe('when cached', () => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
-        if (yield* this.cashed()) throw new Error('wtf')
+        if (yield this.cashed()) throw new Error('wtf')
         this.body = 'lol'
       })
 
@@ -478,7 +478,7 @@ describe('when cached', () => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
-        if (yield* this.cashed()) return
+        if (yield this.cashed()) return
         throw new Error('wtf')
       })
 

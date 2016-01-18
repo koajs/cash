@@ -22,7 +22,7 @@ app.use(require('koa-cash')({
 app.use(function* (next) {
   // this response is already cashed if `true` is returned,
   // so this middleware will automatically serve this response from cache
-  if (yield* this.cashed()) return
+  if (yield this.cashed()) return
 
   // set the response body here,
   // and the upstream middleware will automatically cache it
@@ -38,7 +38,7 @@ Options are:
 
 #### `maxAge`
 
-Default max age for the cache if not set via `yield* this.cashed(maxAge)`.
+Default max age for the cache if not set via `yield this.cashed(maxAge)`.
 
 #### `threshold`
 
@@ -94,19 +94,19 @@ var cache = require('lru-cache')({
 })
 
 app.use(require('koa-cash')({
-  get: function* (key, maxAge) {
+  get (key, maxAge) {
     return cache.get(key)
   },
-  set: function* (key, value) {
+  set (key, value) {
     cache.set(key, value)
   }
 }))
 ```
 
-### var cached = yield* this.cashed([maxAge])
+### var cached = yield this.cashed([maxAge])
 
 This is how you enable a route to be cached.
-If you don't call `yield* this.cashed()`,
+If you don't call `yield this.cashed()`,
 then this route will not be cached nor will it attempt to serve the request from the cache.
 
 `maxAge` is the max age passed to `get()`.
