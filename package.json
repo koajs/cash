@@ -32,5 +32,10 @@
   "license": "MIT",
   "files": [
     "index.js"
+  ],
+  "keywords": [
+    "koa",
+    "cache",
+    "middleware"
   ]
 }
