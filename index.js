@@ -1,12 +1,13 @@
+'use strict'
 
-var compressible = require('compressible')
-var toArray = require('stream-to-array')
-var compress = require('mz/zlib').gzip
-var isJSON = require('koa-is-json')
-var bytes = require('bytes')
+const compressible = require('compressible')
+const toArray = require('stream-to-array')
+const compress = require('mz/zlib').gzip
+const isJSON = require('koa-is-json')
+const bytes = require('bytes')
 
 // methods we cache
-var methods = {
+const methods = {
   HEAD: true,
   GET: true,
 }
@@ -14,15 +15,15 @@ var methods = {
 module.exports = function (options) {
   options = options || {}
 
-  var hash = options.hash || function () { return this.request.url }
-  var threshold = options.threshold || '1kb'
+  const hash = options.hash || function () { return this.request.url }
+  let threshold = options.threshold || '1kb'
   if (typeof threshold === 'string') threshold = bytes(threshold)
-  var get = options.get
-  var set = options.set
+  const get = options.get
+  const set = options.set
   if (!get) throw new Error('.get not defined')
   if (!set) throw new Error('.set not defined')
 
-  return function* cash(next) {
+  return function * cash (next) {
     this.vary('Accept-Encoding')
     this.cashed = cashed
 
@@ -39,7 +40,7 @@ module.exports = function (options) {
     // only cache GET/HEAD 200s
     if (this.response.status !== 200) return
     if (!methods[this.request.method]) return
-    var body = this.response.body
+    let body = this.response.body
     if (!body) return
 
     // stringify JSON bodies
@@ -51,15 +52,15 @@ module.exports = function (options) {
     }
 
     // avoid any potential errors with middleware ordering
-    if (this.response.get('Content-Encoding') || 'identity' !== 'identity') {
+    if ((this.response.get('Content-Encoding') || 'identity') !== 'identity') {
       throw new Error('Place koa-cache below any compression middleware.')
     }
 
-    var fresh = this.request.fresh
+    const fresh = this.request.fresh
     if (fresh) this.response.status = 304
 
-    var obj = {
-      body: body,
+    const obj = {
+      body,
       type: this.response.get('Content-Type') || null,
       lastModified: this.response.lastModified || null,
       etag: this.response.get('etag') || null,
@@ -79,16 +80,16 @@ module.exports = function (options) {
     yield set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0)
   }
 
-  function* cashed(maxAge) {
+  function * cashed (maxAge) {
     // uncacheable request method
     if (!methods[this.request.method]) return false
 
-    var key = this.cashKey = hash.call(this, this)
-    var obj = yield get(key, maxAge || options.maxAge || 0)
-    var body = obj && obj.body
+    const key = this.cashKey = hash.call(this, this)
+    const obj = yield get(key, maxAge || options.maxAge || 0)
+    const body = obj && obj.body
     if (!body) {
       // tell the upstream middleware to cache this response
-      this.cash = { maxAge: maxAge }
+      this.cash = { maxAge }
       return false
     }
 
