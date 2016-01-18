@@ -38,7 +38,7 @@ describe('when not cached', function () {
       if (err) return done(err)
 
       assert(set)
-      c.get('/').body.should.equal('lol')
+      assert.equal(c.get('/').body, 'lol')
       done()
     })
   })
@@ -66,7 +66,7 @@ describe('when not cached', function () {
       .expect('lol', function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.equal('lol')
+        assert.equal(c.get('/').body, 'lol')
         done()
       })
     })
@@ -95,7 +95,7 @@ describe('when not cached', function () {
       .expect('lol', function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.toString('utf8').should.equal('lol')
+        assert.equal(c.get('/').body.toString('utf8'), 'lol')
         done()
       })
     })
@@ -126,7 +126,7 @@ describe('when not cached', function () {
       .expect('{"message":"hi"}', function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.equal('{"message":"hi"}')
+        assert.equal(c.get('/').body, '{"message":"hi"}')
         done()
       })
     })
@@ -156,7 +156,7 @@ describe('when not cached', function () {
       .expect('lol', function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.toString('utf8').should.equal('lol')
+        assert.equal(c.get('/').body.toString('utf8'), 'lol')
         done()
       })
     })
@@ -186,9 +186,9 @@ describe('when not cached', function () {
       .expect(200, function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.be.ok
-        c.get('/').gzip.should.be.ok
-        c.get('/').type.should.equal('text/plain; charset=utf-8')
+        assert(c.get('/').body)
+        assert(c.get('/').gzip)
+        assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
         done()
       })
     })
@@ -218,9 +218,9 @@ describe('when not cached', function () {
       .expect(200, function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.be.ok
+        assert(c.get('/').body)
         assert(!c.get('/').gzip)
-        c.get('/').type.should.equal('image/png')
+        assert.equal(c.get('/').type, 'image/png')
         done()
       })
     })
@@ -250,9 +250,9 @@ describe('when not cached', function () {
       .expect(200, function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.be.ok
+        assert(c.get('/').body)
         assert(!c.get('/').gzip)
-        c.get('/').type.should.equal('text/plain; charset=utf-8')
+        assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
         done()
       })
     })
@@ -281,8 +281,8 @@ describe('when not cached', function () {
       .expect(200, function (err, res) {
         if (err) return done(err)
 
-        c.get('/').body.should.equal('lol')
-        c.get('/').type.should.equal('text/plain; charset=utf-8')
+        assert.equal(c.get('/').body, 'lol')
+        assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
         done()
       })
     })
@@ -375,9 +375,9 @@ describe('when not cached', function () {
 
         var obj = c.get('/')
         assert(obj)
-        obj.body.should.equal('lol')
-        obj.etag.should.equal('"lol"')
-        obj.lastModified.should.eql(new Date(date * 1000))
+        assert.equal(obj.body, 'lol')
+        assert.equal(obj.etag, '"lol"')
+        assert.equal(obj.lastModified.getTime(), new Date(date * 1000).getTime())
         done()
       })
     })
