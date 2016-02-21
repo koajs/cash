@@ -13,7 +13,7 @@
   "devDependencies": {
     "babel-eslint": "^5.0.0",
     "eslint": "^2.0.0",
-    "eslint-config-jongleberry": "^1.2.3",
+    "eslint-config-jongleberry": "^2.0.0",
     "eslint-config-standard-jsx": "^1.1.1",
     "eslint-plugin-promise": "^1.0.8",
     "eslint-plugin-react": "^3.15.0",
