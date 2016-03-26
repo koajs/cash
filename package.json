@@ -11,7 +11,7 @@
     "stream-to-array": "^2.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^5.0.0",
+    "babel-eslint": "^6.0.0",
     "eslint": "~2.2.0",
     "eslint-config-jongleberry": "^2.1.0",
     "eslint-plugin-promise": "^1.0.8",
