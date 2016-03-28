@@ -10,7 +10,7 @@ const bytes = require('bytes')
 // methods we cache
 const methods = {
   HEAD: true,
-  GET: true,
+  GET: true
 }
 
 module.exports = function (options) {
@@ -47,8 +47,7 @@ module.exports = function (options) {
       return true
     }
 
-    if (obj.gzip
-      && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
+    if (obj.gzip && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
       this.response.body = obj.gzip
       this.response.set('Content-Encoding', 'gzip')
     } else {
@@ -101,13 +100,12 @@ module.exports = function (options) {
       body,
       type: this.response.get('Content-Type') || null,
       lastModified: this.response.lastModified || null,
-      etag: this.response.get('etag') || null,
+      etag: this.response.get('etag') || null
     }
 
     if (compressible(obj.type) && this.response.length >= threshold) {
       obj.gzip = yield compress(body)
-      if (!fresh
-        && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
+      if (!fresh && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
         this.response.body = obj.gzip
         this.response.set('Content-Encoding', 'gzip')
       }

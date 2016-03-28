@@ -1,5 +1,7 @@
 'use strict'
 
+/* eslint-env mocha */
+
 const koa = require('koa')
 const assert = require('assert')
 const cache = require('lru-cache')
@@ -9,7 +11,7 @@ const PassThrough = require('stream').PassThrough
 const cash = require('..')
 
 describe('when not cached', () => {
-  it('should pass the maxAge through this.cash=', done => {
+  it('should pass the maxAge through this.cash=', (done) => {
     const app = koa()
     const c = cache()
     let set = false
@@ -45,7 +47,7 @@ describe('when not cached', () => {
   })
 
   describe('when the body is a string', () => {
-    it('should cache the response', done => {
+    it('should cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -74,7 +76,7 @@ describe('when not cached', () => {
   })
 
   describe('when the body is a buffer', () => {
-    it('should cache the response', done => {
+    it('should cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -103,7 +105,7 @@ describe('when not cached', () => {
   })
 
   describe('when the body is JSON', () => {
-    it('should cache the response', done => {
+    it('should cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -134,7 +136,7 @@ describe('when not cached', () => {
   })
 
   describe('when the body is a stream', () => {
-    it('should cache the response', done => {
+    it('should cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -164,7 +166,7 @@ describe('when not cached', () => {
   })
 
   describe('when the type is compressible', () => {
-    it('should compress the body', done => {
+    it('should compress the body', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -196,7 +198,7 @@ describe('when not cached', () => {
   })
 
   describe('when the type is not compressible', () => {
-    it('should not compress the body', done => {
+    it('should not compress the body', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -228,7 +230,7 @@ describe('when not cached', () => {
   })
 
   describe('when the body is below the threshold', () => {
-    it('should not compress the body', done => {
+    it('should not compress the body', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -260,7 +262,7 @@ describe('when not cached', () => {
   })
 
   describe('when the method is HEAD', () => {
-    it('should cache the response', done => {
+    it('should cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -290,7 +292,7 @@ describe('when not cached', () => {
   })
 
   describe('when the method is POST', () => {
-    it('should not cache the response', done => {
+    it('should not cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -319,7 +321,7 @@ describe('when not cached', () => {
   })
 
   describe('when the response code is not 200', () => {
-    it('should not cache the response', done => {
+    it('should not cache the response', (done) => {
       const app = koa()
       const c = cache()
       app.use(cash({
@@ -349,7 +351,7 @@ describe('when not cached', () => {
   })
 
   describe('when etag and last-modified headers are set', () => {
-    it('should cache those values', done => {
+    it('should cache those values', (done) => {
       const app = koa()
       const c = cache()
       const date = Math.round(Date.now() / 1000)
@@ -385,7 +387,7 @@ describe('when not cached', () => {
   })
 
   describe('when the response is fresh', () => {
-    it('should return a 304', done => {
+    it('should return a 304', (done) => {
       const app = koa()
       const c = cache()
       const date = Math.round(Date.now() / 1000)
@@ -425,7 +427,7 @@ describe('when cached', () => {
     }
   })
 
-  before(done => {
+  before((done) => {
     const app = koa()
     app.use(_cash)
     app.use(function * (next) {
@@ -441,7 +443,7 @@ describe('when cached', () => {
   })
 
   describe('when the method is GET', () => {
-    it('should serve from cache', done => {
+    it('should serve from cache', (done) => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
@@ -459,7 +461,7 @@ describe('when cached', () => {
   })
 
   describe('when the method is POST', () => {
-    it('should not serve from cache', done => {
+    it('should not serve from cache', (done) => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
@@ -474,7 +476,7 @@ describe('when cached', () => {
   })
 
   describe('when the response is fresh', () => {
-    it('should 304', done => {
+    it('should 304', (done) => {
       const app = koa()
       app.use(_cash)
       app.use(function * (next) {
