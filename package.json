@@ -16,7 +16,7 @@
     "lru-cache": "^4.0.0",
     "mocha": "^2.3.3",
     "standard": "^7.0.0",
-    "supertest": "^1.1.0"
+    "supertest": "^2.0.0"
   },
   "scripts": {
     "lint": "standard index.js test/**/*.js",
