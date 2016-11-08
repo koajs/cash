@@ -2,10 +2,11 @@
 
 const compressible = require('compressible')
 const toArray = require('stream-to-array')
-const compress = require('mz/zlib').gzip
 const isJSON = require('koa-is-json')
 const Bluebird = require('bluebird')
 const bytes = require('bytes')
+
+const compress = Bluebird.promisify(require('zlib').gzip)
 
 // methods we cache
 const methods = {
