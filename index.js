@@ -5,8 +5,12 @@ const toArray = require('stream-to-array')
 const isJSON = require('koa-is-json')
 const Bluebird = require('bluebird')
 const bytes = require('bytes')
+const zlib = require('zlib')
 
-const compress = Bluebird.promisify(require('zlib').gzip)
+const encodingMethods = {
+  gzip: Bluebird.promisify(zlib.gzip),
+  deflate: Bluebird.promisify(zlib.deflate)
+}
 
 // methods we cache
 const methods = {
@@ -48,9 +52,10 @@ module.exports = function (options) {
       return true
     }
 
-    if (obj.gzip && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-      this.response.body = new Buffer(obj.gzip)
-      this.response.set('Content-Encoding', 'gzip')
+    let encoding = this.acceptsEncodings('gzip', 'deflate', 'identity')
+    if (obj[encoding] && encoding !== 'identity') {
+      this.response.body = new Buffer(obj[encoding])
+      this.response.set('Content-Encoding', encoding)
     } else {
       this.response.body = obj.body
       // tell any compress middleware to not bother compressing this
@@ -105,15 +110,18 @@ module.exports = function (options) {
     if (fresh) this.response.status = 304
 
     if (compressible(obj.type) && this.response.length >= threshold) {
-      obj.gzip = yield compress(body)
-      if (!fresh && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-        this.response.body = obj.gzip
-        this.response.set('Content-Encoding', 'gzip')
+      for (let method in encodingMethods) {
+        obj[method] = encodingMethods[method](body)
+      }
+      let encoding = this.acceptsEncodings('gzip', 'deflate', 'identity')
+      if (!fresh && encoding !== 'identity') {
+        this.response.body = yield obj[encoding]
+        this.response.set('Content-Encoding', encoding)
       }
     }
 
     if (!this.response.get('Content-Encoding')) this.response.set('Content-Encoding', 'identity')
 
-    yield Promise.resolve(set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0))
+    yield Promise.resolve(set(this.cashKey, yield obj, this.cash.maxAge || options.maxAge || 0))
   }
 }
