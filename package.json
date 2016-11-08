@@ -1,7 +1,7 @@
 {
   "name": "koa-cash",
   "description": "HTTP response caching for Koa",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "dependencies": {
     "bluebird": "^3.1.1",
     "bytes": "^2.1.0",
