@@ -7,7 +7,6 @@
     "bytes": "^2.1.0",
     "compressible": "^2.0.0",
     "koa-is-json": "^1.0.0",
-    "mz": "^2.0.0",
     "stream-to-array": "^2.0.0"
   },
   "devDependencies": {
