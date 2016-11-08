@@ -195,6 +195,42 @@ describe('when not cached', () => {
         done()
       })
     })
+
+    it('should handle possible data serialisation and deserialisation', (done) => {
+      const app = koa()
+      const c = cache()
+      app.use(cash({
+        get (key) {
+          let value = c.get(key)
+          return value && JSON.parse(value)
+        },
+        set (key, value) {
+          return c.set(key, JSON.stringify(value))
+        }
+      }))
+      app.use(function * (next) {
+        if (yield this.cashed()) return
+        this.body = Array(1024).join('42')
+      })
+
+      let server = app.listen()
+      request(server)
+      .get('/')
+      .expect('Content-Encoding', 'gzip')
+      .expect(200, (err, res1) => {
+        if (err) return done(err)
+
+        request(server)
+        .get('/')
+        .expect('Content-Encoding', 'gzip')
+        .expect(200, (err, res2) => {
+          if (err) return done(err)
+
+          assert.equal(res1.text, res2.text)
+          done()
+        })
+      })
+    })
   })
 
   describe('when the type is not compressible', () => {
