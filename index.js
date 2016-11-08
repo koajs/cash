@@ -48,7 +48,7 @@ module.exports = function (options) {
     }
 
     if (obj.gzip && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-      this.response.body = obj.gzip
+      this.response.body = new Buffer(obj.gzip)
       this.response.set('Content-Encoding', 'gzip')
     } else {
       this.response.body = obj.body
