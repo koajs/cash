@@ -147,7 +147,7 @@ describe('when not cached', () => {
   })
 
   describe('when the type is compressible', () => {
-    it('should compress the body', (done) => {
+    it('should compress the body with gzip', (done) => {
       const c = cache()
       const app = createApp(c)
       app.use(function * (next) {
@@ -164,7 +164,34 @@ describe('when not cached', () => {
 
         assert(c.get('/').body)
         assert(c.get('/').gzip)
+        assert(c.get('/').deflate)
         assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
+        assert.equal(c.get('/').body, res.text)
+        done()
+      })
+    })
+
+    it('should compress the body with deflate', (done) => {
+      const c = cache()
+      const app = createApp(c)
+      app.use(function * (next) {
+        if (yield this.cashed()) return
+        this.response.type = 'text/plain'
+        this.body = new Buffer(2048)
+      })
+
+      request(app.listen())
+      .get('/')
+      .set('Accept-Encoding', 'deflate')
+      .expect('Content-Encoding', 'deflate')
+      .expect(200, (err, res) => {
+        if (err) return done(err)
+
+        assert(c.get('/').body)
+        assert(c.get('/').gzip)
+        assert(c.get('/').deflate)
+        assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
+        assert.equal(c.get('/').body, res.text)
         done()
       })
     })
@@ -194,7 +221,8 @@ describe('when not cached', () => {
 
         request(server)
         .get('/')
-        .expect('Content-Encoding', 'gzip')
+        .set('Accept-Encoding', 'deflate')
+        .expect('Content-Encoding', 'deflate')
         .expect(200, (err, res2) => {
           if (err) return done(err)
 
@@ -223,6 +251,7 @@ describe('when not cached', () => {
 
         assert(c.get('/').body)
         assert(!c.get('/').gzip)
+        assert(!c.get('/').deflate)
         assert.equal(c.get('/').type, 'image/png')
         done()
       })
@@ -247,6 +276,7 @@ describe('when not cached', () => {
 
         assert(c.get('/').body)
         assert(!c.get('/').gzip)
+        assert(!c.get('/').deflate)
         assert.equal(c.get('/').type, 'text/plain; charset=utf-8')
         done()
       })
