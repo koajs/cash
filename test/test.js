@@ -10,13 +10,25 @@ const PassThrough = require('stream').PassThrough
 
 const cash = require('..')
 
+const createApp = function (c, opts) {
+  const app = koa()
+  app.use(cash(opts || {
+    get (key) {
+      return c.get(key)
+    },
+    set (key, value) {
+      return c.set(key, value)
+    }
+  }))
+  return app
+}
+
 describe('when not cached', () => {
   it('should pass the maxAge through this.cash=', (done) => {
-    const app = koa()
-    const c = cache()
     let set = false
 
-    app.use(cash({
+    const c = cache()
+    const app = createApp(c, {
       get (key) {
         return c.get(key)
       },
@@ -25,7 +37,8 @@ describe('when not cached', () => {
         assert.equal(maxAge, 300)
         return c.set(key, value)
       }
-    }))
+    })
+
     app.use(function * (next) {
       if (yield this.cashed()) return
       this.cash = {
@@ -48,16 +61,8 @@ describe('when not cached', () => {
 
   describe('when the body is a string', () => {
     it('should cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -77,16 +82,8 @@ describe('when not cached', () => {
 
   describe('when the body is a buffer', () => {
     it('should cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = new Buffer('lol')
@@ -106,16 +103,8 @@ describe('when not cached', () => {
 
   describe('when the body is JSON', () => {
     it('should cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = {
@@ -137,16 +126,8 @@ describe('when not cached', () => {
 
   describe('when the body is a stream', () => {
     it('should cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = new PassThrough()
@@ -167,16 +148,8 @@ describe('when not cached', () => {
 
   describe('when the type is compressible', () => {
     it('should compress the body', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.response.type = 'text/plain'
@@ -197,9 +170,8 @@ describe('when not cached', () => {
     })
 
     it('should handle possible data serialisation and deserialisation', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
+      const app = createApp(c, {
         get (key) {
           let value = c.get(key)
           return value && JSON.parse(value)
@@ -207,7 +179,7 @@ describe('when not cached', () => {
         set (key, value) {
           return c.set(key, JSON.stringify(value))
         }
-      }))
+      })
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = Array(1024).join('42')
@@ -235,16 +207,8 @@ describe('when not cached', () => {
 
   describe('when the type is not compressible', () => {
     it('should not compress the body', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.response.type = 'image/png'
@@ -267,16 +231,8 @@ describe('when not cached', () => {
 
   describe('when the body is below the threshold', () => {
     it('should not compress the body', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -299,16 +255,8 @@ describe('when not cached', () => {
 
   describe('when the method is HEAD', () => {
     it('should cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -329,16 +277,8 @@ describe('when not cached', () => {
 
   describe('when the method is POST', () => {
     it('should not cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -358,16 +298,8 @@ describe('when not cached', () => {
 
   describe('when the response code is not 200', () => {
     it('should not cache the response', (done) => {
-      const app = koa()
       const c = cache()
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -388,17 +320,9 @@ describe('when not cached', () => {
 
   describe('when etag and last-modified headers are set', () => {
     it('should cache those values', (done) => {
-      const app = koa()
       const c = cache()
+      const app = createApp(c)
       const date = Math.round(Date.now() / 1000)
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -426,17 +350,9 @@ describe('when not cached', () => {
 
   describe('when the response is fresh', () => {
     it('should return a 304 and cache the response', (done) => {
-      const app = koa()
       const c = cache()
+      const app = createApp(c)
       const date = Math.round(Date.now() / 1000)
-      app.use(cash({
-        get (key) {
-          return c.get(key)
-        },
-        set (key, value) {
-          return c.set(key, value)
-        }
-      }))
       app.use(function * (next) {
         if (yield this.cashed()) return
         this.body = 'lol'
@@ -468,18 +384,9 @@ describe('when not cached', () => {
 describe('when cached', () => {
   const c = cache()
   const date = Math.round(Date.now() / 1000)
-  const _cash = cash({
-    get (key) {
-      return c.get(key)
-    },
-    set (key, value) {
-      return c.set(key, value)
-    }
-  })
 
   before((done) => {
-    const app = koa()
-    app.use(_cash)
+    const app = createApp(c)
     app.use(function * (next) {
       if (yield this.cashed()) return
       this.body = 'lol'
@@ -495,8 +402,7 @@ describe('when cached', () => {
 
   describe('when the method is GET', () => {
     it('should serve from cache', (done) => {
-      const app = koa()
-      app.use(_cash)
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         throw new Error('wtf')
@@ -514,8 +420,7 @@ describe('when cached', () => {
 
   describe('when the method is POST', () => {
     it('should not serve from cache', (done) => {
-      const app = koa()
-      app.use(_cash)
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) throw new Error('wtf')
         this.body = 'lol'
@@ -529,8 +434,7 @@ describe('when cached', () => {
 
   describe('when the response is fresh', () => {
     it('should 304', (done) => {
-      const app = koa()
-      app.use(_cash)
+      const app = createApp(c)
       app.use(function * (next) {
         if (yield this.cashed()) return
         throw new Error('wtf')
