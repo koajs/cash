@@ -53,7 +53,7 @@ module.exports = function (options) {
     }
 
     let encoding = this.acceptsEncodings('gzip', 'deflate', 'identity')
-    if (obj[encoding] && encoding !== 'identity') {
+    if (obj[encoding] && encoding && encoding !== 'identity') {
       this.response.body = new Buffer(obj[encoding])
       this.response.set('Content-Encoding', encoding)
     } else {
@@ -114,7 +114,7 @@ module.exports = function (options) {
         obj[method] = encodingMethods[method](body)
       }
       let encoding = this.acceptsEncodings('gzip', 'deflate', 'identity')
-      if (!fresh && encoding !== 'identity') {
+      if (!fresh && encoding && encoding !== 'identity') {
         this.response.body = yield obj[encoding]
         this.response.set('Content-Encoding', encoding)
       }
