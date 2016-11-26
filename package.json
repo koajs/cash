@@ -10,6 +10,7 @@
     "stream-to-array": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "istanbul": "^1.1.0-alpha.1",
     "koa": "^1.0.0",
     "lru-cache": "^4.0.0",
@@ -19,9 +20,9 @@
   },
   "scripts": {
     "lint": "standard index.js test/**/*.js",
-    "test": "NODE_ENV=test mocha",
-    "test-cov": "NODE_ENV=test node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
-    "test-travis": "npm run lint && NODE_ENV=test node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+    "test": "NODE_ENV=test babel-node ./node_modules/.bin/_mocha",
+    "test-cov": "NODE_ENV=test babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "test-travis": "npm run lint && NODE_ENV=test babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
   },
   "author": {
     "name": "Jonathan Ong",
