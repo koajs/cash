@@ -19,14 +19,14 @@ app.use(require('koa-cash')({
   // some options
 }))
 
-app.use(function* (next) {
+app.use(function* (ctx, next) {
   // this response is already cashed if `true` is returned,
   // so this middleware will automatically serve this response from cache
-  if (yield this.cashed()) return
+  if (await ctx.cashed()) return
 
   // set the response body here,
   // and the upstream middleware will automatically cache it
-  this.response.body = 'hello world!'
+  ctx.response.body = 'hello world!'
 })
 ```
 
@@ -38,7 +38,7 @@ Options are:
 
 #### `maxAge`
 
-Default max age for the cache if not set via `yield this.cashed(maxAge)`.
+Default max age for the cache if not set via `await ctx.cashed(maxAge)`.
 
 #### `threshold`
 
@@ -49,21 +49,21 @@ Minimum byte size to compress response bodies. Default `1kb`.
 A hashing function. By default, it's:
 
 ```js
-function hash(_this) {
-  return this.request.url
+function hash(ctx) {
+  return ctx.request.url
 }
 ```
 
-`this` is the Koa context and is also passed as an argument.
-By default, it caches based on the URL.
+`ctx` is the Koa context. By default, it caches based on the URL.
 
 #### `get()`
 
-Get a value from a store. Must return a "yieldable", which returns the cache's value, if any.
+Get a value from a store. Can be a regular function or an `async` function,
+which returns the cache's value, if any.
 
 ```js
-function get(key, maxAge) {
-  return <yieldable>
+async function get(key, maxAge) {
+  return <cached-value>
 }
 ```
 
@@ -72,11 +72,11 @@ This module makes no opinion about it.
 
 #### `set()`
 
-Set a value to a store. Must return a "yieldable".
+Set a value to a store. Can be a regular function or an `async` function.
 
 ```js
-function set(key, value, maxAge) {
-  return <yieldable>
+async function set(key, value, maxAge) {
+  ...
 }
 ```
 
@@ -103,17 +103,17 @@ app.use(require('koa-cash')({
 }))
 ```
 
-### var cached = yield this.cashed([maxAge])
+### var cached = await ctx.cashed([maxAge])
 
 This is how you enable a route to be cached.
-If you don't call `yield this.cashed()`,
+If you don't call `await ctx.cashed()`,
 then this route will not be cached nor will it attempt to serve the request from the cache.
 
 `maxAge` is the max age passed to `get()`.
 
 If `cached` is `true`,
 then the current request has been served from cache and __you should early `return`__.
-Otherwise, continue setting `this.response.body=` and this will cache the response.
+Otherwise, continue setting `ctx.response.body=` and this will cache the response.
 
 ## Notes
 

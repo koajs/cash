@@ -2,7 +2,7 @@
 
 /* eslint-env mocha */
 
-const koa = require('koa')
+const Koa = require('koa')
 const assert = require('assert')
 const cache = require('lru-cache')
 const request = require('supertest')
@@ -11,8 +11,8 @@ const PassThrough = require('stream').PassThrough
 const cash = require('..')
 
 describe('when not cached', () => {
-  it('should pass the maxAge through this.cash=', (done) => {
-    const app = koa()
+  it('should pass the maxAge through ctx.cash=', (done) => {
+    const app = new Koa()
     const c = cache()
     let set = false
 
@@ -26,12 +26,12 @@ describe('when not cached', () => {
         return c.set(key, value)
       }
     }))
-    app.use(function * (next) {
-      if (yield this.cashed()) return
-      this.cash = {
+    app.use(async function (ctx) {
+      if (await ctx.cashed()) return
+      ctx.cash = {
         maxAge: 300
       }
-      this.body = 'lol'
+      ctx.body = 'lol'
     })
 
     request(app.listen())
@@ -48,7 +48,7 @@ describe('when not cached', () => {
 
   describe('when the body is a string', () => {
     it('should cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -58,9 +58,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
       })
 
       request(app.listen())
@@ -77,7 +77,7 @@ describe('when not cached', () => {
 
   describe('when the body is a buffer', () => {
     it('should cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -87,9 +87,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = new Buffer('lol')
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = new Buffer('lol')
       })
 
       request(app.listen())
@@ -106,7 +106,7 @@ describe('when not cached', () => {
 
   describe('when the body is JSON', () => {
     it('should cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -116,9 +116,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = {
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = {
           message: 'hi'
         }
       })
@@ -137,7 +137,7 @@ describe('when not cached', () => {
 
   describe('when the body is a stream', () => {
     it('should cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -147,10 +147,10 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = new PassThrough()
-        this.body.end('lol')
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = new PassThrough()
+        ctx.body.end('lol')
       })
 
       request(app.listen())
@@ -167,7 +167,7 @@ describe('when not cached', () => {
 
   describe('when the type is compressible', () => {
     it('should compress the body', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -177,10 +177,10 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.response.type = 'text/plain'
-        this.body = new Buffer(2048)
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.response.type = 'text/plain'
+        ctx.body = new Buffer(2048)
       })
 
       request(app.listen())
@@ -197,7 +197,7 @@ describe('when not cached', () => {
     })
 
     it('should handle possible data serialisation and deserialisation', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -208,9 +208,9 @@ describe('when not cached', () => {
           return c.set(key, JSON.stringify(value))
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = Array(1024).join('42')
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = Array(1024).join('42')
       })
 
       let server = app.listen()
@@ -235,7 +235,7 @@ describe('when not cached', () => {
 
   describe('when the type is not compressible', () => {
     it('should not compress the body', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -245,10 +245,10 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.response.type = 'image/png'
-        this.body = new Buffer(2048)
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.response.type = 'image/png'
+        ctx.body = new Buffer(2048)
       })
 
       request(app.listen())
@@ -267,7 +267,7 @@ describe('when not cached', () => {
 
   describe('when the body is below the threshold', () => {
     it('should not compress the body', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -277,9 +277,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
       })
 
       request(app.listen())
@@ -299,7 +299,7 @@ describe('when not cached', () => {
 
   describe('when the method is HEAD', () => {
     it('should cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -309,9 +309,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
       })
 
       request(app.listen())
@@ -329,7 +329,7 @@ describe('when not cached', () => {
 
   describe('when the method is POST', () => {
     it('should not cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -339,9 +339,9 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
       })
 
       request(app.listen())
@@ -358,7 +358,7 @@ describe('when not cached', () => {
 
   describe('when the response code is not 200', () => {
     it('should not cache the response', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       app.use(cash({
         get (key) {
@@ -368,10 +368,10 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
-        this.status = 201
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
+        ctx.status = 201
       })
 
       request(app.listen())
@@ -388,7 +388,7 @@ describe('when not cached', () => {
 
   describe('when etag and last-modified headers are set', () => {
     it('should cache those values', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       const date = Math.round(Date.now() / 1000)
       app.use(cash({
@@ -399,11 +399,11 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
-        this.etag = 'lol'
-        this.lastModified = new Date(date * 1000)
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
+        ctx.etag = 'lol'
+        ctx.lastModified = new Date(date * 1000)
       })
 
       request(app.listen())
@@ -424,7 +424,7 @@ describe('when not cached', () => {
 
   describe('when the response is fresh', () => {
     it('should return a 304', (done) => {
-      const app = koa()
+      const app = new Koa()
       const c = cache()
       const date = Math.round(Date.now() / 1000)
       app.use(cash({
@@ -435,11 +435,11 @@ describe('when not cached', () => {
           return c.set(key, value)
         }
       }))
-      app.use(function * (next) {
-        if (yield this.cashed()) return
-        this.body = 'lol'
-        this.etag = 'lol'
-        this.lastModified = new Date(date * 1000)
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
+        ctx.body = 'lol'
+        ctx.etag = 'lol'
+        ctx.lastModified = new Date(date * 1000)
       })
 
       request(app.listen())
@@ -464,13 +464,13 @@ describe('when cached', () => {
   })
 
   before((done) => {
-    const app = koa()
+    const app = new Koa()
     app.use(_cash)
-    app.use(function * (next) {
-      if (yield this.cashed()) return
-      this.body = 'lol'
-      this.etag = 'lol'
-      this.lastModified = new Date(date * 1000)
+    app.use(async function (ctx, next) {
+      if (await ctx.cashed()) return
+      ctx.body = 'lol'
+      ctx.etag = 'lol'
+      ctx.lastModified = new Date(date * 1000)
     })
 
     request(app.listen())
@@ -480,10 +480,10 @@ describe('when cached', () => {
 
   describe('when the method is GET', () => {
     it('should serve from cache', (done) => {
-      const app = koa()
+      const app = new Koa()
       app.use(_cash)
-      app.use(function * (next) {
-        if (yield this.cashed()) return
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
         throw new Error('wtf')
       })
 
@@ -498,11 +498,11 @@ describe('when cached', () => {
 
   describe('when the method is POST', () => {
     it('should not serve from cache', (done) => {
-      const app = koa()
+      const app = new Koa()
       app.use(_cash)
-      app.use(function * (next) {
-        if (yield this.cashed()) throw new Error('wtf')
-        this.body = 'lol'
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) throw new Error('wtf')
+        ctx.body = 'lol'
       })
 
       request(app.listen())
@@ -513,10 +513,10 @@ describe('when cached', () => {
 
   describe('when the response is fresh', () => {
     it('should 304', (done) => {
-      const app = koa()
+      const app = new Koa()
       app.use(_cash)
-      app.use(function * (next) {
-        if (yield this.cashed()) return
+      app.use(async function (ctx, next) {
+        if (await ctx.cashed()) return
         throw new Error('wtf')
       })
 

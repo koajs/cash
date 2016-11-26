@@ -17,7 +17,7 @@ const methods = {
 module.exports = function (options) {
   options = options || {}
 
-  const hash = options.hash || function () { return this.request.url }
+  const hash = options.hash || function (ctx) { return ctx.request.url }
   let threshold = options.threshold || '1kb'
   if (typeof threshold === 'string') threshold = bytes(threshold)
   const get = options.get
@@ -25,95 +25,97 @@ module.exports = function (options) {
   if (!get) throw new Error('.get not defined')
   if (!set) throw new Error('.set not defined')
 
-  // this.cashed(maxAge) => boolean
-  const cashed = Bluebird.coroutine(function * cashed (maxAge) {
+  // ctx.cashed(maxAge) => boolean
+  const cashed = async function cashed (ctx, maxAge) {
     // uncacheable request method
-    if (!methods[this.request.method]) return false
+    if (!methods[ctx.request.method]) return false
 
-    const key = this.cashKey = hash.call(this, this)
-    const obj = yield Promise.resolve(get(key, maxAge || options.maxAge || 0))
+    const key = ctx.cashKey = hash(ctx)
+    const obj = await get(key, maxAge || options.maxAge || 0)
     const body = obj && obj.body
     if (!body) {
       // tell the upstream middleware to cache this response
-      this.cash = { maxAge }
+      ctx.cash = { maxAge }
       return false
     }
 
     // serve from cache
-    this.response.type = obj.type
-    if (obj.lastModified) this.response.lastModified = obj.lastModified
-    if (obj.etag) this.response.etag = obj.etag
-    if (this.request.fresh) {
-      this.response.status = 304
+    ctx.response.type = obj.type
+    if (obj.lastModified) ctx.response.lastModified = obj.lastModified
+    if (obj.etag) ctx.response.etag = obj.etag
+    if (ctx.request.fresh) {
+      ctx.response.status = 304
       return true
     }
 
-    if (obj.gzip && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-      this.response.body = new Buffer(obj.gzip)
-      this.response.set('Content-Encoding', 'gzip')
+    if (obj.gzip && ctx.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
+      ctx.response.body = new Buffer(obj.gzip)
+      ctx.response.set('Content-Encoding', 'gzip')
     } else {
-      this.response.body = obj.body
+      ctx.response.body = obj.body
       // tell any compress middleware to not bother compressing this
-      this.response.set('Content-Encoding', 'identity')
+      ctx.response.set('Content-Encoding', 'identity')
     }
 
     return true
-  })
+  }
 
   // the actual middleware
-  return function * cash (next) {
-    this.vary('Accept-Encoding')
-    this.cashed = cashed
+  return async function cash (ctx, next) {
+    ctx.vary('Accept-Encoding')
+    ctx.cashed = function (maxAge) {
+      return cashed(ctx, maxAge)
+    }
 
-    yield next
+    await next()
 
     // check for HTTP caching just in case
-    if (!this.cash) {
-      if (this.request.fresh) this.response.status = 304
+    if (!ctx.cash) {
+      if (ctx.request.fresh) ctx.response.status = 304
       return
     }
 
     // cache the response
 
     // only cache GET/HEAD 200s
-    if (this.response.status !== 200) return
-    if (!methods[this.request.method]) return
-    let body = this.response.body
+    if (ctx.response.status !== 200) return
+    if (!methods[ctx.request.method]) return
+    let body = ctx.response.body
     if (!body) return
 
     // stringify JSON bodies
-    if (isJSON(body)) body = this.response.body = JSON.stringify(body)
+    if (isJSON(body)) body = ctx.response.body = JSON.stringify(body)
     // buffer streams
     if (typeof body.pipe === 'function') {
       // note: non-binary streams are NOT supported!
-      body = this.response.body = Buffer.concat(yield toArray(body))
+      body = ctx.response.body = Buffer.concat(await toArray(body))
     }
 
     // avoid any potential errors with middleware ordering
-    if ((this.response.get('Content-Encoding') || 'identity') !== 'identity') {
+    if ((ctx.response.get('Content-Encoding') || 'identity') !== 'identity') {
       throw new Error('Place koa-cache below any compression middleware.')
     }
 
-    const fresh = this.request.fresh
-    if (fresh) this.response.status = 304
+    const fresh = ctx.request.fresh
+    if (fresh) ctx.response.status = 304
 
     const obj = {
       body,
-      type: this.response.get('Content-Type') || null,
-      lastModified: this.response.lastModified || null,
-      etag: this.response.get('etag') || null
+      type: ctx.response.get('Content-Type') || null,
+      lastModified: ctx.response.lastModified || null,
+      etag: ctx.response.get('etag') || null
     }
 
-    if (compressible(obj.type) && this.response.length >= threshold) {
-      obj.gzip = yield compress(body)
-      if (!fresh && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
-        this.response.body = obj.gzip
-        this.response.set('Content-Encoding', 'gzip')
+    if (compressible(obj.type) && ctx.response.length >= threshold) {
+      obj.gzip = await compress(body)
+      if (!fresh && ctx.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
+        ctx.response.body = obj.gzip
+        ctx.response.set('Content-Encoding', 'gzip')
       }
     }
 
-    if (!this.response.get('Content-Encoding')) this.response.set('Content-Encoding', 'identity')
+    if (!ctx.response.get('Content-Encoding')) ctx.response.set('Content-Encoding', 'identity')
 
-    yield Promise.resolve(set(this.cashKey, obj, this.cash.maxAge || options.maxAge || 0))
+    await set(ctx.cashKey, obj, ctx.cash.maxAge || options.maxAge || 0)
   }
 }
