@@ -93,10 +93,7 @@ module.exports = function (options) {
     if ((this.response.get('Content-Encoding') || 'identity') !== 'identity') {
       throw new Error('Place koa-cache below any compression middleware.')
     }
-
-    const fresh = this.request.fresh
-    if (fresh) this.response.status = 304
-
+    
     const obj = {
       body,
       type: this.response.get('Content-Type') || null,
@@ -104,6 +101,9 @@ module.exports = function (options) {
       etag: this.response.get('etag') || null
     }
 
+    const fresh = this.request.fresh
+    if (fresh) this.response.status = 304
+    
     if (compressible(obj.type) && this.response.length >= threshold) {
       obj.gzip = yield compress(body)
       if (!fresh && this.request.acceptsEncodings('gzip', 'identity') === 'gzip') {
