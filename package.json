@@ -20,6 +20,8 @@
     "supertest": "^1.1.0"
   },
   "scripts": {
+    "build": "babel index.js --out-dir dist",
+    "prepublish": "npm run build",
     "lint": "standard index.js test/**/*.js",
     "test": "NODE_ENV=test babel-node ./node_modules/.bin/_mocha",
     "test-cov": "NODE_ENV=test babel-node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
@@ -33,9 +35,7 @@
   },
   "repository": "koajs/cash",
   "license": "MIT",
-  "files": [
-    "index.js"
-  ],
+  "main": "dist/index.js",
   "keywords": [
     "koa",
     "cache",
