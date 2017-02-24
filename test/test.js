@@ -403,6 +403,7 @@ describe('when not cached', () => {
         if (yield this.cashed()) return
         this.body = 'lol'
         this.etag = 'lol'
+        this.type = 'text/lol; charset=utf-8'
         this.lastModified = new Date(date * 1000)
       })
 
@@ -416,6 +417,7 @@ describe('when not cached', () => {
         assert(obj)
         assert.equal(obj.body, 'lol')
         assert.equal(obj.etag, '"lol"')
+        assert.equal(obj.type, 'text/lol; charset=utf-8')
         assert.equal(obj.lastModified.getTime(), new Date(date * 1000).getTime())
         done()
       })
@@ -423,7 +425,7 @@ describe('when not cached', () => {
   })
 
   describe('when the response is fresh', () => {
-    it('should return a 304', (done) => {
+    it('should return a 304 and cache the response', (done) => {
       const app = koa()
       const c = cache()
       const date = Math.round(Date.now() / 1000)
@@ -439,14 +441,26 @@ describe('when not cached', () => {
         if (yield this.cashed()) return
         this.body = 'lol'
         this.etag = 'lol'
+        this.type = 'text/lol; charset=utf-8'
         this.lastModified = new Date(date * 1000)
       })
 
-      request(app.listen())
+      let server = app.listen()
+      request(server)
       .get('/')
       .set('If-None-Match', '"lol"')
       .expect('')
-      .expect(304, done)
+      .expect(304, (err) => {
+        if (err) return done(err)
+
+        const obj = c.get('/')
+        assert(obj)
+        assert.equal(obj.body, 'lol')
+        assert.equal(obj.etag, '"lol"')
+        assert.equal(obj.type, 'text/lol; charset=utf-8')
+        assert.equal(obj.lastModified.getTime(), new Date(date * 1000).getTime())
+        done()
+      })
     })
   })
 })
