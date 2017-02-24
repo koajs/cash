@@ -470,6 +470,7 @@ describe('when cached', () => {
       if (yield this.cashed()) return
       this.body = 'lol'
       this.etag = 'lol'
+      this.type = 'text/lol; charset=utf-8'
       this.lastModified = new Date(date * 1000)
     })
 
@@ -490,6 +491,7 @@ describe('when cached', () => {
       request(app.listen())
       .get('/')
       .expect(200)
+      .expect('Content-Type', 'text/lol; charset=utf-8')
       .expect('Content-Encoding', 'identity')
       .expect('ETag', '"lol"')
       .expect('lol', done)
