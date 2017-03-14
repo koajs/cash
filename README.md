@@ -38,7 +38,7 @@ Options are:
 
 #### `maxAge`
 
-Default max age for the cache if not set via `yield this.cashed(maxAge)`.
+Default max age (in milliseconds) for the cache if not set via `yield this.cashed(maxAge)`.
 
 #### `threshold`
 
