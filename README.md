@@ -19,7 +19,7 @@ app.use(require('koa-cash')({
   // some options
 }))
 
-app.use(function* (ctx, next) {
+app.use(async (ctx, next) {
   // this response is already cashed if `true` is returned,
   // so this middleware will automatically serve this response from cache
   if (await ctx.cashed()) return
@@ -38,7 +38,7 @@ Options are:
 
 #### `maxAge`
 
-Default max age for the cache if not set via `await ctx.cashed(maxAge)`.
+Default max age (in milliseconds) for the cache if not set via `await ctx.cashed(maxAge)`.
 
 #### `threshold`
 
