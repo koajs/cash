@@ -19,7 +19,7 @@ app.use(require('koa-cash')({
   // some options
 }))
 
-app.use(async (ctx, next) {
+app.use(async (ctx, next) => {
   // this response is already cashed if `true` is returned,
   // so this middleware will automatically serve this response from cache
   if (await ctx.cashed()) return
