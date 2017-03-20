@@ -41,6 +41,9 @@
   "repository": "koajs/cash",
   "license": "MIT",
   "main": "dist/index.js",
+  "files": [
+    "index.js"
+  ],
   "keywords": [
     "koa",
     "cache",
