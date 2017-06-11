@@ -13,10 +13,6 @@
     "stream-to-array": "^2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-plugin-transform-async-generator-functions": "^6.22.0",
-    "babel-plugin-transform-async-to-generator": "^6.22.0",
-    "babel-register": "^6.23.0",
     "istanbul": "^1.1.0-alpha.1",
     "koa": "^2.0.0",
     "lru-cache": "^4.0.0",
@@ -24,9 +20,10 @@
     "standard": "^8.6.0",
     "supertest": "^1.1.0"
   },
+  "engines": {
+    "node": ">= 7.6.0"
+  },
   "scripts": {
-    "build": "babel index.js --out-dir dist",
-    "prepublish": "npm run build",
     "lint": "standard index.js test/**/*.js",
     "test": "NODE_ENV=test mocha",
     "test-cov": "NODE_ENV=test node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
@@ -40,7 +37,7 @@
   },
   "repository": "koajs/cash",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "index.js",
   "keywords": [
     "koa",
     "cache",
