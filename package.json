@@ -6,18 +6,18 @@
     "tag": "next"
   },
   "dependencies": {
-    "bluebird": "^3.1.1",
     "bytes": "^2.1.0",
     "compressible": "^2.0.0",
     "koa-is-json": "^1.0.0",
-    "stream-to-array": "^2.0.0"
+    "stream-to-array": "^2.0.0",
+    "util.promisify": "^1.0.0"
   },
   "devDependencies": {
     "istanbul": "^1.1.0-alpha.1",
     "koa": "^2.0.0",
     "lru-cache": "^4.0.0",
     "mocha": "^3.1.2",
-    "standard": "^8.6.0",
+    "standard": "^9.0.0",
     "supertest": "^1.1.0"
   },
   "engines": {
