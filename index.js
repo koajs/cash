@@ -3,7 +3,6 @@
 const compressible = require('compressible')
 const toArray = require('stream-to-array')
 const isJSON = require('koa-is-json')
-const Bluebird = require('bluebird')
 const bytes = require('bytes')
 const co = require('co')
 
