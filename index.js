@@ -5,6 +5,7 @@ const toArray = require('stream-to-array')
 const isJSON = require('koa-is-json')
 const Bluebird = require('bluebird')
 const bytes = require('bytes')
+const co = require('co')
 
 const compress = require('util.promisify')(require('zlib').gzip)
 
@@ -26,7 +27,7 @@ module.exports = function (options) {
   if (!set) throw new Error('.set not defined')
 
   // this.cashed(maxAge) => boolean
-  const cashed = Bluebird.coroutine(function * cashed (maxAge) {
+  const cashed = co.wrap(function * cashed (maxAge) {
     // uncacheable request method
     if (!methods[this.request.method]) return false
 

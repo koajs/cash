@@ -5,6 +5,7 @@
   "dependencies": {
     "bluebird": "^3.1.1",
     "bytes": "^2.1.0",
+    "co": "^4.4.0",
     "compressible": "^2.0.0",
     "koa-is-json": "^1.0.0",
     "stream-to-array": "^2.0.0",
