@@ -127,12 +127,12 @@ Otherwise, continue setting `ctx.response.body=` and this will cache the respons
 [npm-url]: https://npmjs.org/package/koa-cash
 [github-tag]: http://img.shields.io/github/tag/koajs/cash.svg?style=flat-square
 [github-url]: https://github.com/koajs/cash/tags
-[travis-image]: https://img.shields.io/travis/koajs/cash.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/koajs/cash/next.svg?style=flat-square
 [travis-url]: https://travis-ci.org/koajs/cash
-[coveralls-image]: https://img.shields.io/coveralls/koajs/cash.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/koajs/cash?branch=master
-[david-image]: http://img.shields.io/david/koajs/cash.svg?style=flat-square
-[david-url]: https://david-dm.org/koajs/cash
+[coveralls-image]: https://img.shields.io/coveralls/koajs/cash/next.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/koajs/cash?branch=next
+[david-image]: http://img.shields.io/david/koajs/cash/next.svg?style=flat-square
+[david-url]: https://david-dm.org/koajs/cash/next
 [license-image]: http://img.shields.io/npm/l/koa-cash.svg?style=flat-square
 [license-url]: LICENSE
 [downloads-image]: http://img.shields.io/npm/dm/koa-cash.svg?style=flat-square
