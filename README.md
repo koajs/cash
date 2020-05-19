@@ -1,6 +1,6 @@
 # koa-cash
 
-[![build status](https://img.shields.io/travis/com/koajs/cash.svg)](https://travis-ci.com/koajs/cash)
+[![build status](https://img.shields.io/travis/org/koajs/cash.svg)](https://travis-ci.org/koajs/cash)
 [![code coverage](https://img.shields.io/codecov/c/github/koajs/cash.svg)](https://codecov.io/gh/koajs/cash)
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
