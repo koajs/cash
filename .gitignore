@@ -1,8 +1,6 @@
-
-.DS_Store*
+.DS_Store
 *.log
-*.gz
-
+.idea
 node_modules
 coverage
-cache
+.nyc_output

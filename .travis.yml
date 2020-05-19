@@ -1,8 +1,9 @@
-node_js:
-- "4"
-- "6"
-- "8"
-sudo: false
 language: node_js
-script: "npm run test-travis"
-after_script: "npm install coveralls@2.10.0 && cat ./coverage/lcov.info | coveralls"
+node_js:
+  - '10'
+  - '12'
+  - '13'
+script:
+  npm run test-coverage
+after_success:
+  npm run coverage

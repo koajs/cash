@@ -1,43 +1,143 @@
 {
   "name": "koa-cash",
-  "description": "HTTP response caching for Koa",
+  "description": "HTTP response caching for Koa. HTTP response caching for Koa.  Supports Redis, in-memory store, and more!",
   "version": "2.2.0",
+  "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+  "ava": {
+    "verbose": true,
+    "serial": true,
+    "failFast": true
+  },
+  "bugs": {
+    "url": "https://github.com/koajs/koa-cash/issues",
+    "email": "me@jongleberry.com"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "contributors": [
+    "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
+    "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com)"
+  ],
   "dependencies": {
-    "bytes": "^2.1.0",
-    "co": "^4.4.0",
-    "compressible": "^2.0.0",
-    "koa-is-json": "^1.0.0",
-    "stream-to-array": "^2.0.0",
-    "util.promisify": "^1.0.0"
+    "bytes": "^3.1.0",
+    "compressible": "^2.0.18",
+    "fast-safe-stringify": "^2.0.7",
+    "get-stream": "^5.1.0",
+    "is-stream": "^2.0.0",
+    "koa-is-json": "^1.0.0"
   },
   "devDependencies": {
-    "istanbul": "^0.4.2",
-    "koa": "^1.0.0",
-    "lru-cache": "^4.0.0",
-    "mocha": "^3.1.2",
-    "standard": "^9.0.0",
-    "supertest": "^1.1.0"
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "ava": "latest",
+    "codecov": "latest",
+    "cross-env": "latest",
+    "eslint": "6.x",
+    "eslint-config-xo-lass": "latest",
+    "fixpack": "latest",
+    "husky": "latest",
+    "into-stream": "^5.1.1",
+    "koa": "^2.12.0",
+    "lint-staged": "latest",
+    "lru-cache": "4.x",
+    "nyc": "latest",
+    "remark-cli": "latest",
+    "remark-preset-github": "latest",
+    "supertest": "1.x",
+    "xo": "0.25"
+  },
+  "engines": {
+    "node": ">=8.3"
+  },
+  "homepage": "https://github.com/koajs/koa-cash",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "keywords": [
+    "alternative",
+    "amazon",
+    "aws",
+    "cache",
+    "caching",
+    "cdn",
+    "cloudfront",
+    "content",
+    "database",
+    "db",
+    "delivery",
+    "handler",
+    "hosting",
+    "http",
+    "in-memory",
+    "ioredis",
+    "key",
+    "koa",
+    "memory",
+    "middleware",
+    "network",
+    "provider",
+    "redis",
+    "response",
+    "responses",
+    "s3",
+    "sentinel",
+    "serve",
+    "server",
+    "service",
+    "session",
+    "sessions",
+    "space",
+    "spaces",
+    "static",
+    "storage",
+    "value"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "nyc": {
+    "check-coverage": true,
+    "lines": 100,
+    "functions": 100,
+    "branches": 100,
+    "reporter": [
+      "lcov",
+      "html",
+      "text"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "trailingComma": "none"
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-github"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koajs/koa-cash"
   },
   "scripts": {
-    "lint": "standard index.js test/**/*.js",
-    "test": "NODE_ENV=test mocha",
-    "test-cov": "NODE_ENV=test node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
-    "test-travis": "npm run lint && NODE_ENV=test node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report lcovonly"
+    "ava": "cross-env NODE_ENV=test ava",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "lint": "xo && remark . -qfo",
+    "nyc": "cross-env NODE_ENV=test nyc ava",
+    "test": "yarn run lint && yarn run ava",
+    "test-coverage": "yarn run lint && yarn run nyc"
   },
-  "author": {
-    "name": "Jonathan Ong",
-    "email": "me@jongleberry.com",
-    "url": "http://jongleberry.com",
-    "twitter": "https://twitter.com/jongleberry"
-  },
-  "repository": "koajs/cash",
-  "license": "MIT",
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "koa",
-    "cache",
-    "middleware"
-  ]
+  "xo": {
+    "prettier": true,
+    "space": true,
+    "extends": [
+      "xo-lass"
+    ]
+  }
 }
