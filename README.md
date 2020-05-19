@@ -1,11 +1,11 @@
 # koa-cash
 
-[![build status](https://img.shields.io/travis/com/koajs/koa-cash.svg)](https://travis-ci.com/koajs/koa-cash)
-[![code coverage](https://img.shields.io/codecov/c/github/koajs/koa-cash.svg)](https://codecov.io/gh/koajs/koa-cash)
+[![build status](https://img.shields.io/travis/com/koajs/cash.svg)](https://travis-ci.com/koajs/cash)
+[![code coverage](https://img.shields.io/codecov/c/github/koajs/cash.svg)](https://codecov.io/gh/koajs/cash)
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
-[![license](https://img.shields.io/github/license/koajs/koa-cash.svg)](LICENSE)
+[![license](https://img.shields.io/github/license/koajs/cash.svg)](LICENSE)
 [![npm downloads](https://img.shields.io/npm/dt/koa-cash.svg)](https://npm.im/koa-cash)
 
 > HTTP response caching for Koa.  Supports Redis, in-memory store, and more!
@@ -178,7 +178,7 @@ If `cached` is `true`, then the current request has been served from cache and *
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
 
-## 
+##
 
 [npm]: https://www.npmjs.com/
 
