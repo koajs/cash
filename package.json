@@ -1,7 +1,7 @@
 {
   "name": "koa-cash",
   "description": "HTTP response caching for Koa. HTTP response caching for Koa.  Supports Redis, in-memory store, and more!",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
   "ava": {
     "verbose": true,
