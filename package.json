@@ -9,7 +9,7 @@
     "failFast": true
   },
   "bugs": {
-    "url": "https://github.com/koajs/koa-cash/issues",
+    "url": "https://github.com/koajs/cash/issues",
     "email": "me@jongleberry.com"
   },
   "commitlint": {
@@ -52,7 +52,7 @@
   "engines": {
     "node": ">=8.3"
   },
-  "homepage": "https://github.com/koajs/koa-cash",
+  "homepage": "https://github.com/koajs/cash",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged && npm test",
@@ -123,7 +123,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/koajs/koa-cash"
+    "url": "https://github.com/koajs/cash"
   },
   "scripts": {
     "ava": "cross-env NODE_ENV=test ava",
