@@ -178,7 +178,7 @@ If `cached` is `true`, then the current request has been served from cache and *
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
 
-##
+## 
 
 [npm]: https://www.npmjs.com/
 
