@@ -101,7 +101,7 @@ module.exports = function(options) {
       body = ctx.response.body;
     } else if (isStream(body)) {
       // buffer streams
-      ctx.response.body = await getStream(body);
+      ctx.response.body = await getStream.buffer(body);
       body = ctx.response.body;
     }
 
