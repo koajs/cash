@@ -17,7 +17,7 @@ const methods = {
 };
 
 module.exports = function(options) {
-  options = options || { compression: false };
+  options = options || {};
 
   const hash =
     options.hash ||
@@ -120,11 +120,7 @@ module.exports = function(options) {
     const { fresh } = ctx.request;
     if (fresh) ctx.response.status = 304;
 
-    if (
-      options.compression &&
-      compressible(obj.type) &&
-      ctx.response.length >= threshold
-    ) {
+    if (compressible(obj.type) && ctx.response.length >= threshold) {
       obj.gzip = await compress(body);
       if (
         !fresh &&
