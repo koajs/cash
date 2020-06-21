@@ -16,7 +16,8 @@ const createApp = function(c, opts) {
         },
         set(key, value) {
           return c.set(key, value);
-        }
+        },
+        compression: true
       }
     )
   );
@@ -35,7 +36,8 @@ test.cb('should pass the maxAge through ctx.cash=', t => {
       set = true;
       t.is(maxAge, 300);
       return c.set(key, value);
-    }
+    },
+    compression: true
   });
 
   app.use(async function(ctx) {
@@ -169,7 +171,8 @@ test.cb(
       },
       set(key, value) {
         return c.set(key, JSON.stringify(value));
-      }
+      },
+      compression: true
     });
     app.use(async function(ctx) {
       if (await ctx.cashed()) return;
