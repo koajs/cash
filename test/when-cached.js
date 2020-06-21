@@ -15,7 +15,8 @@ const createApp = function(c, opts) {
         },
         set(key, value) {
           return c.set(key, value);
-        }
+        },
+        compression: true
       }
     )
   );

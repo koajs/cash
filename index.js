@@ -59,6 +59,7 @@ module.exports = function(options) {
     }
 
     if (
+      options.compression &&
       obj.gzip &&
       this.request.acceptsEncodings('gzip', 'identity') === 'gzip'
     ) {
@@ -67,7 +68,9 @@ module.exports = function(options) {
     } else {
       this.response.body = obj.body;
       // tell any compress middleware to not bother compressing this
-      this.response.set('Content-Encoding', 'identity');
+      if (options.compression) {
+        this.response.set('Content-Encoding', 'identity');
+      }
     }
 
     return true;
