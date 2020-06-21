@@ -138,7 +138,7 @@ module.exports = function(options) {
       }
     }
 
-    if (!ctx.response.get('Content-Encoding'))
+    if (options.compression && !ctx.response.get('Content-Encoding'))
       ctx.response.set('Content-Encoding', 'identity');
 
     await set(ctx.cashKey, obj, ctx.cash.maxAge || options.maxAge || 0);
