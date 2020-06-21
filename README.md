@@ -30,7 +30,7 @@
 Caches the response based on any arbitrary store you'd like.
 
 * Handles JSON and stream bodies
-* Handles gzip compression negotiation
+* Handles gzip compression negotiation (if `options.compression` is set to `true` as of v4.0.0)
 * Handles 304 responses
 
 :tada: **Pairs great with [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses)** :tada:
@@ -85,6 +85,10 @@ Default max age (in milliseconds) for the cache if not set via `await ctx.cashed
 #### `threshold`
 
 Minimum byte size to compress response bodies. Default `1kb`.
+
+#### `compression`
+
+If a truthy value is passed, then compression will be enabled.  This value is `false` by default.
 
 #### `hash()`
 
