@@ -17,7 +17,7 @@ const methods = {
 };
 
 module.exports = function(options) {
-  options = options || { compression: false };
+  options = options || { compression: false, setCachedHeader: false };
 
   const hash =
     options.hash ||
@@ -53,6 +53,7 @@ module.exports = function(options) {
     this.response.type = obj.type;
     if (obj.lastModified) this.response.lastModified = obj.lastModified;
     if (obj.etag) this.response.etag = obj.etag;
+    if (options.setCachedHeader) this.response.set('X-Cached-Response', 'HIT');
     if (this.request.fresh) {
       this.response.status = 304;
       return true;

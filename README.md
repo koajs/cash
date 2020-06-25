@@ -90,6 +90,10 @@ Minimum byte size to compress response bodies. Default `1kb`.
 
 If a truthy value is passed, then compression will be enabled.  This value is `false` by default.
 
+#### `setCachedHeader`
+
+If a truthy value is passed, then `X-Cached-Response` header will be set as `HIT` when response is served from the cache.  This value is `false` by default.
+
 #### `hash()`
 
 A hashing function. By default, it's:
