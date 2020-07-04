@@ -44,7 +44,7 @@ test.cb('when cached when the method is GET it should serve from cache', t => {
   const app = createApp(c);
   app.use(async function(ctx) {
     if (await ctx.cashed()) return;
-    throw new Error('wtf');
+    throw new Error('oops');
   });
 
   request(app.listen())
@@ -62,7 +62,7 @@ test.cb(
     const app = createApp(c, { setCachedHeader: true });
     app.use(async function(ctx) {
       if (await ctx.cashed()) return;
-      throw new Error('wtf');
+      throw new Error('oops');
     });
 
     request(app.listen())
@@ -81,7 +81,7 @@ test.cb(
   t => {
     const app = createApp(c);
     app.use(async function(ctx) {
-      if (await ctx.cashed()) throw new Error('wtf');
+      if (await ctx.cashed()) throw new Error('oops');
       ctx.body = 'lol';
     });
 
@@ -95,7 +95,7 @@ test.cb('when cached when the response is fresh it should 304', t => {
   const app = createApp(c);
   app.use(async function(ctx) {
     if (await ctx.cashed()) return;
-    throw new Error('wtf');
+    throw new Error('oops');
   });
 
   request(app.listen())
