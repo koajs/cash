@@ -1911,9 +1911,9 @@ eslint-config-prettier@^6.3.0:
     get-stdin "^6.0.0"
 
 eslint-config-xo-lass@latest:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-config-xo-lass/-/eslint-config-xo-lass-1.0.3.tgz#2259fed4d18ef18ec00560360358aba538fb5ac6"
-  integrity sha512-hnry5qIMaVXAIt0QJwoTcRbny8E9x7K1GKW790ZLnAOWS42PK5BL5POpIG/NuumjwL/J5ThVgZpeVn8tFevhzw==
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-config-xo-lass/-/eslint-config-xo-lass-1.0.5.tgz#b31d4e52ba95746bebac6723806f6b36ddd5a8c7"
+  integrity sha512-Q5C0tI+Ld7PbPn0o42M7mF7Dqj4yb5wCP6PWGaSnOndjl+S9BkaOSTNqF6lQwhgsCic2whYWu+Jmq5kzl41S0A==
 
 eslint-config-xo@^0.27.1:
   version "0.27.2"
