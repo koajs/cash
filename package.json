@@ -46,7 +46,7 @@
     "nyc": "latest",
     "remark-cli": "latest",
     "remark-preset-github": "latest",
-    "supertest": "1.x",
+    "supertest": "6.x",
     "xo": "0.25"
   },
   "engines": {
