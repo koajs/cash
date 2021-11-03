@@ -47,7 +47,7 @@
     "remark-cli": "latest",
     "remark-preset-github": "latest",
     "supertest": "1.x",
-    "xo": "0.25"
+    "xo": "0.46"
   },
   "engines": {
     "node": ">=8.3"
