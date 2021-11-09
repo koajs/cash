@@ -13,16 +13,27 @@
 
 ## Table of Contents
 
-* [Features](#features)
-* [Install](#install)
-* [Usage](#usage)
-* [API](#api)
-  * [app.use(koaCash(options))](#appusekoacashoptions)
-  * [const cached = await ctx.cashed(\[maxAge\])](#const-cached--await-ctxcashedmaxage)
-* [Notes](#notes)
-* [Usage](#usage-1)
-* [Contributors](#contributors)
-* [License](#license)
+- [koa-cash](#koa-cash)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [API](#api)
+    - [app.use(koaCash(options))](#appusekoacashoptions)
+      - [`maxAge`](#maxage)
+      - [`threshold`](#threshold)
+      - [`compression`](#compression)
+      - [`setCachedHeader`](#setcachedheader)
+      - [`hash()`](#hash)
+      - [`get()`](#get)
+      - [`set()`](#set)
+      - [Example](#example)
+    - [const cached = await ctx.cashed(\[maxAge])](#const-cached--await-ctxcashedmaxage)
+  - [Notes](#notes)
+  - [Usage](#usage-1)
+  - [Contributors](#contributors)
+  - [License](#license)
+  - [](#)
 
 
 ## Features
@@ -54,11 +65,19 @@ yarn add koa-cash
 ## Usage
 
 ```js
-const koaCash = require('koa-cash');
+import LRU from 'lru-cache';
+import koaCash from 'koa-cash';
 
 // ...
-
-app.use(koaCash())
+const cache = new LRU();
+app.use(koaCash({
+  get: (key) => {
+    return cache.get(key);
+  },
+  set(key, value) {
+    return cache.set(key, value);
+  },
+}))
 
 app.use(async ctx => {
   // this response is already cashed if `true` is returned,
