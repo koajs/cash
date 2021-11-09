@@ -11,10 +11,9 @@
 > HTTP response caching for Koa.  Supports Redis, in-memory store, and more!
 
 
-## Table of Contents
+Table of Contents
 
 - [koa-cash](#koa-cash)
-  - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Install](#install)
   - [Usage](#usage)
@@ -28,12 +27,12 @@
       - [`get()`](#get)
       - [`set()`](#set)
       - [Example](#example)
-    - [const cached = await ctx.cashed(\[maxAge])](#const-cached--await-ctxcashedmaxage)
+    - [Max age](#max-age)
   - [Notes](#notes)
   - [Usage](#usage-1)
   - [Contributors](#contributors)
   - [License](#license)
-  - [](#)
+  - [Links](#links)
 
 
 ## Features
@@ -173,7 +172,9 @@ app.use(koaCash({
 
 See [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses) test folder more examples (e.g. Redis with `ioredis`).
 
-### const cached = await ctx.cashed(\[maxAge])
+### Max age
+
+const cached = await ctx.cashed(\[maxAge])
 
 This is how you enable a route to be cached. If you don't call `await ctx.cashed()`, then this route will not be cached nor will it attempt to serve the request from the cache.
 
@@ -205,8 +206,7 @@ If `cached` is `true`, then the current request has been served from cache and *
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
 
-## 
+## Links
 
-[npm]: https://www.npmjs.com/
-
-[yarn]: https://yarnpkg.com/
+- [NPM](https://www.npmjs.com/)
+- [Yarn](https://yarnpkg.com/)
