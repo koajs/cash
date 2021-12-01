@@ -11,13 +11,15 @@ const safeStringify = require('fast-safe-stringify');
 const compress = promisify(gzip);
 
 // methods we cache
-const methods = {
+const defaultMethods = {
   HEAD: true,
   GET: true
 };
 
 module.exports = function(options) {
   options = options || { compression: false, setCachedHeader: false };
+
+  const methods = Object.assign(defaultMethods, options.methods);
 
   const hash =
     options.hash ||
