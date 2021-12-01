@@ -19,7 +19,7 @@ const defaultMethods = {
 module.exports = function(options) {
   options = options || { compression: false, setCachedHeader: false };
 
-  const methods = Object.assign(defaultMethods, options.methods)
+  const methods = Object.assign(defaultMethods, options.methods);
 
   const hash =
     options.hash ||

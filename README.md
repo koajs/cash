@@ -10,30 +10,29 @@
 
 > HTTP response caching for Koa.  Supports Redis, in-memory store, and more!
 
-
 Table of Contents
 
-- [koa-cash](#koa-cash)
-  - [Features](#features)
-  - [Install](#install)
-  - [Usage](#usage)
-  - [API](#api)
-    - [app.use(koaCash(options))](#appusekoacashoptions)
-      - [`maxAge`](#maxage)
-      - [`threshold`](#threshold)
-      - [`compression`](#compression)
-      - [`setCachedHeader`](#setcachedheader)
-      - [`hash()`](#hash)
-      - [`get()`](#get)
-      - [`set()`](#set)
-      - [Example](#example)
-    - [Max age](#max-age)
-  - [Notes](#notes)
-  - [Usage](#usage-1)
-  - [Contributors](#contributors)
-  - [License](#license)
-  - [Links](#links)
-
+* [koa-cash](#koa-cash)
+  * [Features](#features)
+  * [Install](#install)
+  * [Usage](#usage)
+  * [API](#api)
+    * [app.use(koaCash(options))](#appusekoacashoptions)
+      * [`maxAge`](#maxage)
+      * [`threshold`](#threshold)
+      * [`compression`](#compression)
+      * [`setCachedHeader`](#setcachedheader)
+      * [`methods`](#methods)
+      * [`hash()`](#hash)
+      * [`get()`](#get)
+      * [`set()`](#set)
+      * [Example](#example)
+    * [Max age](#max-age)
+  * [Notes](#notes)
+  * [Usage](#usage-1)
+  * [Contributors](#contributors)
+  * [License](#license)
+  * [Links](#links)
 
 ## Features
 
@@ -45,21 +44,19 @@ Caches the response based on any arbitrary store you'd like.
 
 :tada: **Pairs great with [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses)** :tada:
 
-
 ## Install
 
-[npm][]:
+[NPM](https://www.npmjs.com/)
 
 ```sh
 npm install koa-cash
 ```
 
-[yarn][]:
+[Yarn](https://yarnpkg.com/)
 
 ```sh
 yarn add koa-cash
 ```
-
 
 ## Usage
 
@@ -89,7 +86,6 @@ app.use(async ctx => {
 });
 ```
 
-
 ## API
 
 ### app.use(koaCash(options))
@@ -111,6 +107,12 @@ If a truthy value is passed, then compression will be enabled.  This value is `f
 #### `setCachedHeader`
 
 If a truthy value is passed, then `X-Cached-Response` header will be set as `HIT` when response is served from the cache.  This value is `false` by default.
+
+#### `methods`
+
+If an object is passed, then add extra HTTP method caching. This value is empty by default. But `GET` and `HEAD` are enabled.
+
+Eg: `{ POST: true }`
 
 #### `hash()`
 
@@ -182,16 +184,13 @@ This is how you enable a route to be cached. If you don't call `await ctx.cashed
 
 If `cached` is `true`, then the current request has been served from cache and **you should early `return`**. Otherwise, continue setting `ctx.body=` and this will cache the response.
 
-
 ## Notes
 
 * Only `GET` and `HEAD` requests are cached.
 * Only `200` responses are cached. Don't set `304` status codes on these routes - this middleware will handle it for you
 * The underlying store should be able to handle `Date` objects as well as `Buffer` objects. Otherwise, you may have to serialize/deserialize yourself.
 
-
 ## Usage
-
 
 ## Contributors
 
@@ -200,13 +199,11 @@ If `cached` is `true`, then the current request has been served from cache and *
 | **Jonathan Ong** | <http://jongleberry.com>  |
 | **Nick Baugh**   | <http://niftylettuce.com> |
 
-
 ## License
 
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
-
 ## Links
 
-- [NPM](https://www.npmjs.com/)
-- [Yarn](https://yarnpkg.com/)
+* [NPM](https://www.npmjs.com/)
+* [Yarn](https://yarnpkg.com/)
