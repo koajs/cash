@@ -11,18 +11,28 @@
 > HTTP response caching for Koa.  Supports Redis, in-memory store, and more!
 
 
-## Table of Contents
+Table of Contents
 
-* [Features](#features)
-* [Install](#install)
-* [Usage](#usage)
-* [API](#api)
-  * [app.use(koaCash(options))](#appusekoacashoptions)
-  * [const cached = await ctx.cashed(\[maxAge\])](#const-cached--await-ctxcashedmaxage)
-* [Notes](#notes)
-* [Usage](#usage-1)
-* [Contributors](#contributors)
-* [License](#license)
+- [koa-cash](#koa-cash)
+  - [Features](#features)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [API](#api)
+    - [app.use(koaCash(options))](#appusekoacashoptions)
+      - [`maxAge`](#maxage)
+      - [`threshold`](#threshold)
+      - [`compression`](#compression)
+      - [`setCachedHeader`](#setcachedheader)
+      - [`hash()`](#hash)
+      - [`get()`](#get)
+      - [`set()`](#set)
+      - [Example](#example)
+    - [Max age](#max-age)
+  - [Notes](#notes)
+  - [Usage](#usage-1)
+  - [Contributors](#contributors)
+  - [License](#license)
+  - [Links](#links)
 
 
 ## Features
@@ -54,11 +64,19 @@ yarn add koa-cash
 ## Usage
 
 ```js
-const koaCash = require('koa-cash');
+import LRU from 'lru-cache';
+import koaCash from 'koa-cash';
 
 // ...
-
-app.use(koaCash())
+const cache = new LRU();
+app.use(koaCash({
+  get: (key) => {
+    return cache.get(key);
+  },
+  set(key, value) {
+    return cache.set(key, value);
+  },
+}))
 
 app.use(async ctx => {
   // this response is already cashed if `true` is returned,
@@ -154,7 +172,9 @@ app.use(koaCash({
 
 See [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses) test folder more examples (e.g. Redis with `ioredis`).
 
-### const cached = await ctx.cashed(\[maxAge])
+### Max age
+
+const cached = await ctx.cashed(\[maxAge])
 
 This is how you enable a route to be cached. If you don't call `await ctx.cashed()`, then this route will not be cached nor will it attempt to serve the request from the cache.
 
@@ -186,8 +206,7 @@ If `cached` is `true`, then the current request has been served from cache and *
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
 
-## 
+## Links
 
-[npm]: https://www.npmjs.com/
-
-[yarn]: https://yarnpkg.com/
+- [NPM](https://www.npmjs.com/)
+- [Yarn](https://yarnpkg.com/)
