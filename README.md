@@ -27,9 +27,9 @@ Table of Contents
       * [`get()`](#get)
       * [`set()`](#set)
       * [Example](#example)
-    * [Max age](#max-age)
+    * [Max age (optional)](#max-age-optional)
+    * [CashClear](#cashclear)
   * [Notes](#notes)
-  * [Usage](#usage-1)
   * [Contributors](#contributors)
   * [License](#license)
   * [Links](#links)
@@ -174,9 +174,11 @@ app.use(koaCash({
 
 See [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses) test folder more examples (e.g. Redis with `ioredis`).
 
-### Max age
+### Max age (optional)
 
-const cached = await ctx.cashed(\[maxAge])
+```js
+const cached = await ctx.cashed(maxAge) // maxAge is passed to your caching strategy
+```
 
 This is how you enable a route to be cached. If you don't call `await ctx.cashed()`, then this route will not be cached nor will it attempt to serve the request from the cache.
 
@@ -184,13 +186,19 @@ This is how you enable a route to be cached. If you don't call `await ctx.cashed
 
 If `cached` is `true`, then the current request has been served from cache and **you should early `return`**. Otherwise, continue setting `ctx.body=` and this will cache the response.
 
+### CashClear
+
+```js
+ctx.cashClear('/')
+```
+
+This is a special method available on the ctx that you can use to clear the cache for a specific key.
+
 ## Notes
 
-* Only `GET` and `HEAD` requests are cached.
+* Only `GET` and `HEAD` requests are cached. (Unless overridden)
 * Only `200` responses are cached. Don't set `304` status codes on these routes - this middleware will handle it for you
 * The underlying store should be able to handle `Date` objects as well as `Buffer` objects. Otherwise, you may have to serialize/deserialize yourself.
-
-## Usage
 
 ## Contributors
 
