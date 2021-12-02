@@ -90,7 +90,7 @@ test.cb('when the body is a buffer it should cache the response', t => {
   request(app.listen())
     .get('/')
     .expect(200)
-    .expect('lol', err => {
+    .end(function(err) {
       if (err) return t.end(err);
 
       t.is(c.get('/').body.toString('utf8'), 'lol');
@@ -130,7 +130,7 @@ test.cb('when the body is a stream it should cache the response', t => {
   request(app.listen())
     .get('/')
     .expect(200)
-    .expect('lol', err => {
+    .end(function(err) {
       if (err) return t.end(err);
 
       t.is(c.get('/').body.toString('utf8'), 'lol');
@@ -259,7 +259,6 @@ test.cb('when the method is HEAD it should cache the response', t => {
 
   request(app.listen())
     .head('/')
-    .expect('')
     .expect(200, err => {
       if (err) return t.end(err);
 
