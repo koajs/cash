@@ -139,7 +139,10 @@ test.cb(
       .expect('Content-Type', 'text/lol; charset=utf-8')
       .expect('Content-Encoding', 'identity')
       .expect('ETag', '"lol"')
-      .expect('lol', t.end);
+      // eslint-disable-next-line promise/prefer-await-to-then
+      .then(resp => {
+        t.is(resp.text, 'lol');
+      });
 
     request(app.listen())
       .get('/')
@@ -148,6 +151,7 @@ test.cb(
       // eslint-disable-next-line promise/prefer-await-to-then
       .then(resp => {
         t.is(resp.text, 'no lols');
+        t.end();
       });
   }
 );
