@@ -3965,7 +3965,12 @@ lowercase-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-2.0.0.tgz#2603e78b7b4b0006cbca2fbcc8a3202558ac9479"
   integrity sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
 
-lru-cache@4.x, lru-cache@^4.0.1:
+lru-cache@7.x:
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.4.2.tgz#92f7b5afe82759f51b216a96fae3bc1828df9712"
+  integrity sha512-Xs3+hFPDSKQmL05Gs6NhvAADol1u9TmLoNoE03ZjszX6a5iYIO3rPUM4jIjoBUJeTaWEBMozjjmV70gvdRfIdw==
+
+lru-cache@^4.0.1:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
   integrity sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
