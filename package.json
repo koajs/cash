@@ -1,7 +1,7 @@
 {
   "name": "koa-cash",
   "description": "HTTP response caching for Koa. HTTP response caching for Koa.  Supports Redis, in-memory store, and more!",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
   "ava": {
     "verbose": true,
@@ -25,7 +25,7 @@
     "bytes": "^3.1.0",
     "compressible": "^2.0.18",
     "fast-safe-stringify": "^2.0.7",
-    "get-stream": "^5.1.0",
+    "get-stream": "^6.0.1",
     "is-stream": "^2.0.0",
     "koa-is-json": "^1.0.0"
   },
@@ -38,7 +38,6 @@
     "eslint": "6.x",
     "eslint-config-xo-lass": "latest",
     "fixpack": "latest",
-    "husky": "latest",
     "into-stream": "^5.1.1",
     "koa": "^2.12.0",
     "lint-staged": "latest",
@@ -56,12 +55,6 @@
     "index.js"
   ],
   "homepage": "https://github.com/koajs/cash",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npm test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "keywords": [
     "alternative",
     "amazon",
