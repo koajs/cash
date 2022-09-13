@@ -38,7 +38,6 @@
     "eslint": "6.x",
     "eslint-config-xo-lass": "latest",
     "fixpack": "latest",
-    "husky": "latest",
     "into-stream": "^5.1.1",
     "koa": "^2.12.0",
     "lint-staged": "latest",
@@ -56,12 +55,6 @@
     "index.js"
   ],
   "homepage": "https://github.com/koajs/cash",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npm test",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "keywords": [
     "alternative",
     "amazon",
