@@ -122,3 +122,36 @@ test.cb('when cached when the response is fresh it should 304', t => {
     .set('If-None-Match', '"lol"')
     .expect(304, t.end);
 });
+
+test.cb(
+  'when cached when the method is GET it should serve from cache until cleared',
+  t => {
+    const app = createApp(c);
+
+    app.use(async function(ctx) {
+      if (await ctx.cashed()) return ctx.cashClear('/');
+      ctx.body = 'no lols';
+    });
+
+    request(app.listen())
+      .get('/')
+      .expect(200)
+      .expect('Content-Type', 'text/lol; charset=utf-8')
+      .expect('Content-Encoding', 'identity')
+      .expect('ETag', '"lol"')
+      // eslint-disable-next-line promise/prefer-await-to-then
+      .then(resp => {
+        t.is(resp.text, 'lol');
+      });
+
+    request(app.listen())
+      .get('/')
+      .expect(200)
+      .expect('Content-Type', 'text/plain; charset=utf-8')
+      // eslint-disable-next-line promise/prefer-await-to-then
+      .then(resp => {
+        t.is(resp.text, 'no lols');
+        t.end();
+      });
+  }
+);

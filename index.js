@@ -36,6 +36,12 @@ module.exports = function(options) {
   if (!get) throw new Error('.get not defined');
   if (!set) throw new Error('.set not defined');
 
+  // allow for manual cache clearing
+  function cashClear(key) {
+    // console.log(`Removing cache key: ${key}`);
+    set(key, false);
+  }
+
   // ctx.cashed(maxAge) => boolean
   async function cashed(maxAge) {
     // uncacheable request method
@@ -84,6 +90,7 @@ module.exports = function(options) {
   async function middleware(ctx, next) {
     ctx.vary('Accept-Encoding');
     ctx.cashed = cashed.bind(ctx);
+    ctx.cashClear = cashClear.bind(ctx);
 
     await next();
 
