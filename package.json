@@ -35,7 +35,7 @@
     "ava": "latest",
     "codecov": "latest",
     "cross-env": "latest",
-    "eslint": "6.x",
+    "eslint": "8.x",
     "eslint-config-xo-lass": "latest",
     "fixpack": "latest",
     "into-stream": "^5.1.1",
