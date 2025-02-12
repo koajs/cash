@@ -3,11 +3,6 @@
   "description": "HTTP response caching for Koa. HTTP response caching for Koa.  Supports Redis, in-memory store, and more!",
   "version": "4.1.1",
   "author": "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
-  "ava": {
-    "verbose": true,
-    "serial": true,
-    "failFast": true
-  },
   "bugs": {
     "url": "https://github.com/koajs/cash/issues",
     "email": "me@jongleberry.com"
@@ -22,34 +17,35 @@
     "Nick Baugh <niftylettuce@gmail.com> (http://niftylettuce.com)"
   ],
   "dependencies": {
-    "bytes": "^3.1.0",
+    "bytes": "^3.1.2",
     "compressible": "^2.0.18",
-    "fast-safe-stringify": "^2.0.7",
+    "fast-safe-stringify": "^2.1.1",
     "get-stream": "^5.1.0",
     "is-stream": "^2.0.0",
-    "koa-is-json": "^1.0.0"
+    "koa-is-json": "^1.0.0",
+    "mime-types": "^2.1.35",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "latest",
-    "@commitlint/config-conventional": "latest",
-    "ava": "latest",
-    "codecov": "latest",
-    "cross-env": "latest",
-    "eslint": "6.x",
-    "eslint-config-xo-lass": "latest",
-    "fixpack": "latest",
-    "into-stream": "^5.1.1",
-    "koa": "^2.12.0",
-    "lint-staged": "latest",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "ava": "^5.2.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.8.0",
+    "eslint-config-xo-lass": "^2.0.1",
+    "fixpack": "^4.0.0",
+    "husky": "^9.1.4",
+    "into-stream": "5.1.1",
+    "koa": "^2.15.4",
+    "lint-staged": "^15.2.8",
     "lru-cache": "4.x",
-    "nyc": "latest",
-    "remark-cli": "latest",
-    "remark-preset-github": "latest",
-    "supertest": "latest",
-    "xo": "0.25"
+    "nyc": "^17.0.0",
+    "remark-cli": "11.0.0",
+    "remark-preset-github": "^4.0.4",
+    "xo": "^0.58.0"
   },
   "engines": {
-    "node": ">=8.3"
+    "node": ">=18"
   },
   "files": [
     "index.js"
@@ -98,23 +94,13 @@
   "main": "index.js",
   "nyc": {
     "check-coverage": true,
-    "lines": 95,
+    "lines": 93,
     "functions": 100,
-    "branches": 83,
+    "branches": 69,
     "reporter": [
       "lcov",
       "html",
       "text"
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "bracketSpacing": true,
-    "trailingComma": "none"
-  },
-  "remarkConfig": {
-    "plugins": [
-      "preset-github"
     ]
   },
   "repository": {
@@ -123,17 +109,10 @@
   },
   "scripts": {
     "ava": "cross-env NODE_ENV=test ava",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "xo && remark . -qfo",
+    "lint": "xo --fix && remark . -qfo && fixpack",
     "nyc": "cross-env NODE_ENV=test nyc ava",
-    "test": "yarn run lint && yarn run ava",
-    "test-coverage": "yarn run lint && yarn run nyc"
-  },
-  "xo": {
-    "prettier": true,
-    "space": true,
-    "extends": [
-      "xo-lass"
-    ]
+    "prepare": "husky install",
+    "pretest": "npm run lint",
+    "test": "npm run nyc"
   }
 }

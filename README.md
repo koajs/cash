@@ -1,7 +1,6 @@
 # koa-cash
 
-[![build status](https://img.shields.io/travis/koajs/cash.svg)](https://travis-ci.org/koajs/cash)
-[![code coverage](https://img.shields.io/codecov/c/github/koajs/cash.svg)](https://codecov.io/gh/koajs/cash)
+[![build status](https://github.com/koajs/cash/actions/workflows/ci.yml/badge.svg)](https://github.com/koajs/cash/actions/workflows/ci.yml)
 [![code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![made with lass](https://img.shields.io/badge/made_with-lass-95CC28.svg)](https://lass.js.org)
@@ -10,29 +9,21 @@
 
 > HTTP response caching for Koa.  Supports Redis, in-memory store, and more!
 
-Table of Contents
 
-* [koa-cash](#koa-cash)
-  * [Features](#features)
-  * [Install](#install)
-  * [Usage](#usage)
-  * [API](#api)
-    * [app.use(koaCash(options))](#appusekoacashoptions)
-      * [`maxAge`](#maxage)
-      * [`threshold`](#threshold)
-      * [`compression`](#compression)
-      * [`setCachedHeader`](#setcachedheader)
-      * [`methods`](#methods)
-      * [`hash()`](#hash)
-      * [`get()`](#get)
-      * [`set()`](#set)
-      * [Example](#example)
-    * [Max age (optional)](#max-age-optional)
-    * [CashClear](#cashclear)
-  * [Notes](#notes)
-  * [Contributors](#contributors)
-  * [License](#license)
-  * [Links](#links)
+## Table of Contents
+
+* [Features](#features)
+* [Install](#install)
+* [Usage](#usage)
+* [API](#api)
+  * [app.use(koaCash(options))](#appusekoacashoptions)
+  * [Max age (optional)](#max-age-optional)
+  * [CashClear](#cashclear)
+* [Notes](#notes)
+* [Contributors](#contributors)
+* [License](#license)
+* [Links](#links)
+
 
 ## Features
 
@@ -44,6 +35,7 @@ Caches the response based on any arbitrary store you'd like.
 
 :tada: **Pairs great with [@ladjs/koa-cache-responses](https://github.com/ladjs/koa-cache-responses)** :tada:
 
+
 ## Install
 
 [NPM](https://www.npmjs.com/)
@@ -52,11 +44,6 @@ Caches the response based on any arbitrary store you'd like.
 npm install koa-cash
 ```
 
-[Yarn](https://yarnpkg.com/)
-
-```sh
-yarn add koa-cash
-```
 
 ## Usage
 
@@ -85,6 +72,7 @@ app.use(async ctx => {
   ctx.body = 'hello world!';
 });
 ```
+
 
 ## API
 
@@ -194,11 +182,13 @@ ctx.cashClear('/')
 
 This is a special method available on the ctx that you can use to clear the cache for a specific key.
 
+
 ## Notes
 
 * Only `GET` and `HEAD` requests are cached. (Unless overridden)
 * Only `200` responses are cached. Don't set `304` status codes on these routes - this middleware will handle it for you
 * The underlying store should be able to handle `Date` objects as well as `Buffer` objects. Otherwise, you may have to serialize/deserialize yourself.
+
 
 ## Contributors
 
@@ -207,11 +197,12 @@ This is a special method available on the ctx that you can use to clear the cach
 | **Jonathan Ong** | <http://jongleberry.com>  |
 | **Nick Baugh**   | <http://niftylettuce.com> |
 
+
 ## License
 
 [MIT](LICENSE) © [Jonathan Ong](http://jongleberry.com)
 
+
 ## Links
 
 * [NPM](https://www.npmjs.com/)
-* [Yarn](https://yarnpkg.com/)

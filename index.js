@@ -1,6 +1,6 @@
-const { gzip } = require('zlib');
-const { promisify } = require('util');
-
+const path = require('node:path');
+const { gzip } = require('node:zlib');
+const { promisify } = require('node:util');
 const bytes = require('bytes');
 const compressible = require('compressible');
 const getStream = require('get-stream');
@@ -16,14 +16,37 @@ const defaultMethods = {
   GET: true
 };
 
-module.exports = function(options) {
-  options = options || { compression: false, setCachedHeader: false };
+//
+// text/plain extensions
+// <https://github.com/jshttp/mime-db/blob/3145b8fd1a082730eb57540f68421b081909b651/db.json#L8373>
+// - txt
+// - text
+// - conf
+// - def
+// - list
+// - log
+// - in
+// - ini
+//
+const TXT_EXTENSIONS = new Set([
+  'txt',
+  'text',
+  'conf',
+  'def',
+  'list',
+  'log',
+  'in',
+  'ini'
+]);
+
+module.exports = function (options) {
+  options ||= { compression: false, setCachedHeader: false };
 
   const methods = Object.assign(defaultMethods, options.methods);
 
   const hash =
     options.hash ||
-    function(ctx) {
+    function (ctx) {
       return ctx.request.url;
     };
 
@@ -58,7 +81,7 @@ module.exports = function(options) {
     }
 
     // serve from cache
-    this.response.type = obj.type;
+    if (obj.type) this.response.type = obj.type;
     if (obj.lastModified) this.response.lastModified = obj.lastModified;
     if (obj.etag) this.response.etag = obj.etag;
     if (options.setCachedHeader) this.response.set('X-Cached-Response', 'HIT');
@@ -129,6 +152,15 @@ module.exports = function(options) {
       lastModified: ctx.response.lastModified || null,
       etag: ctx.response.get('etag') || null
     };
+
+    //
+    // if the content-type was `text` or `text/plain` then don't cache
+    // (since it's likely cache poisoning or the default Koa `text` being used)
+    //
+    if (obj.type === 'text' || obj.type === 'text/plain') {
+      const ext = path.extname(ctx.path);
+      if (ext && !TXT_EXTENSIONS.has(ext.toLowerCase())) obj.type = null;
+    }
 
     const { fresh } = ctx.request;
     if (fresh) ctx.response.status = 304;
