@@ -23,8 +23,7 @@
     "get-stream": "^5.1.0",
     "is-stream": "^2.0.0",
     "koa-is-json": "^1.0.0",
-    "mime-types": "^2.1.35",
-    "supertest": "^7.0.0"
+    "mime-types": "^2.1.35"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -42,6 +41,7 @@
     "nyc": "^17.0.0",
     "remark-cli": "11.0.0",
     "remark-preset-github": "^4.0.4",
+    "supertest": "^7.0.0",
     "xo": "^0.58.0"
   },
   "engines": {
