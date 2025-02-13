@@ -1,4 +1,5 @@
 const path = require('node:path');
+const { Buffer } = require('node:buffer');
 const { gzip } = require('node:zlib');
 const { promisify } = require('node:util');
 const bytes = require('bytes');

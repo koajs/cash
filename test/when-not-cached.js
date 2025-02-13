@@ -1,3 +1,4 @@
+const { Buffer } = require('node:buffer');
 const { promisify } = require('node:util');
 const Koa = require('koa');
 const LRU = require('lru-cache');
