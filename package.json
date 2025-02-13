@@ -22,8 +22,7 @@
     "fast-safe-stringify": "^2.1.1",
     "get-stream": "^5.1.0",
     "is-stream": "^2.0.0",
-    "koa-is-json": "^1.0.0",
-    "mime-types": "^2.1.35"
+    "koa-is-json": "^1.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
