@@ -155,10 +155,12 @@ module.exports = function (options) {
     };
 
     //
-    // if the content-type was `text` or `text/plain` then don't cache
+    // if the content-type was `text` or started with `text/plain` then don't cache
     // (since it's likely cache poisoning or the default Koa `text` being used)
+    // NOTE: we use `startsWith` for `text/plain` to handle charset variations
+    //       (e.g. `text/plain; charset=utf-8` which is Koa's default)
     //
-    if (obj.type === 'text' || obj.type === 'text/plain') {
+    if (obj.type === 'text' || obj.type?.startsWith('text/plain')) {
       const ext = path.extname(ctx.path);
       if (ext && !TXT_EXTENSIONS.has(ext.toLowerCase())) obj.type = null;
     }
