@@ -155,14 +155,22 @@ module.exports = function (options) {
     };
 
     //
-    // if the content-type was `text` or started with `text/plain` then don't cache
+    // if the content-type was `text` or started with `text/plain` then
+    // check if the path extension is a known text/plain extension;
+    // if it has an extension that is NOT in the list, null the type
     // (since it's likely cache poisoning or the default Koa `text` being used)
+    //
     // NOTE: we use `startsWith` for `text/plain` to handle charset variations
     //       (e.g. `text/plain; charset=utf-8` which is Koa's default)
     //
+    // NOTE: `path.extname()` returns the extension with a leading dot
+    //       (e.g. `.txt`) but `TXT_EXTENSIONS` stores extensions without
+    //       the dot (e.g. `txt`), so we strip the dot with `slice(1)`
+    //
     if (obj.type === 'text' || obj.type?.startsWith('text/plain')) {
       const ext = path.extname(ctx.path);
-      if (ext && !TXT_EXTENSIONS.has(ext.toLowerCase())) obj.type = null;
+      if (ext && !TXT_EXTENSIONS.has(ext.slice(1).toLowerCase()))
+        obj.type = null;
     }
 
     const { fresh } = ctx.request;
